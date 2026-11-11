@@ -359,7 +359,7 @@
             card.className = `player-card rank-${index + 1}`;
 
             const avatarHtml = player.avatar 
-                 vyskyt ? `<img src="${player.avatar}" alt="${player.name}" class="avatar">`
+                ? `<img src="${player.avatar}" alt="${player.name}" class="avatar">`
                 : `<div class="avatar">${player.name.charAt(0).toUpperCase()}</div>`;
 
             card.innerHTML = `
@@ -385,8 +385,7 @@
         });
         message += "\n```";
 
-        // Zde vložte URL vašeho Discord Webhooku, kterou získáte v nastavení kanálu na Discordu
-        const webhookUrl = prompt("Vložte URL vašeho Discord Webhooku (nebo ji zadejte natvrdo do kódu):");
+        const webhookUrl = prompt("Vložte URL vašeho Discord Webhooku:");
         if (!webhookUrl) return;
 
         fetch(webhookUrl, {
