@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klanový Turnaj - Žebříček</title>
+    <!-- Načtení knihovny Chart.js pro grafy -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --gold: #fbbf24;
+            --silver: #94a3b8;
+            --bronze: #b45309;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* --- KARTY HRÁČŮ --- */
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .player-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, border-color 0.2s;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .player-card.rank-1 { border-color: var(--gold); }
+        .player-card.rank-2 { border-color: var(--silver); }
+        .player-card.rank-3 { border-color: var(--bronze); }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            object-fit: cover;
+        }
+
+        .player-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-score {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .rank-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--card-bg);
+            border: 1px solid #334155;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- SEKCING GRAFU --- */
+        .chart-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- TABULKA ZÁPISU BODŮ --- */
+        .table-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            overflow-x: auto;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #334155;
+        }
+
+        th {
+            background-color: #0f172a;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        input[type="number"] {
+            width: 50px;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            color: #fff;
+            padding: 5px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .total-cell {
+            font-weight: bold;
+            color: var(--gold);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏆 Celkové výsledky turnaje</h1>
+
+    <!-- KARTY HRÁČŮ (DYNAMICKY PODLE POŘADÍ) -->
+    <div class="players-grid" id="playersGrid"></div>
+
+    <!-- SLOUPCOVÝ GRAF -->
+    <div class="chart-container">
+        <canvas id="scoreChart"></canvas>
+    </div>
+
+    <!-- TABULKA PRO ZADÁVÁNÍ BODŮ -->
+    <div class="table-container">
+        <h2>Zápis bodů z turnajů</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Hráč</th>
+                    <th>🎯 Šipky</th>
+                    <th>🥊 MK</th>
+                    <th>⚽ FIFA</th>
+                    <th>🐰 Rabbids</th>
+                    <th>⚔️ Beat Saber</th>
+                    <th>🧠 Kvíz</th>
+                    <th>Celkem</th>
+                </tr>
+            </thead>
+            <tbody id="scoresTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // 1. DATOVÁ STRUKTURA HRÁČŮ A TURNAJŮ
+    // Místo avatar: null můžete později vkládat cesty např. 'fotky/dany.jpg'
+    const players = [
+        { id: 'dany', name: 'DaNY', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'fullhouse', name: 'Fullhouse', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'spider', name: 'Spider', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'vjgodlike', name: 'VJgodlike', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'machy', name: 'Machy', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'rami', name: 'Rami', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'hayha', name: 'Hayha', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'slapy', name: 'Slapy', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'peta', name: 'Peta', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } }
+    ];
+
+    const games = ['sipky', 'mk', 'fifa', 'rabbits', 'beatsaber', 'kviz'];
+
+    // Vypočítá celkové skóre pro jednoho hráče
+    function getTotalScore(player) {
+        return games.reduce((sum, game) => sum + (player.scores[game] || 0), 0);
+    }
+
+    // 2. INICIALIZACE SLOUPCOVÉHO GRAFU (Chart.js)
+    const ctx = document.getElementById('scoreChart').getContext('2d');
+    let scoreChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Celkový počet bodů',
+                data: [],
+                backgroundColor: 'rgba(99, 102, 241, 0.85)',
+                borderColor: 'rgba(99, 102, 241, 1)',
+                borderWidth: 2,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: { display: true, text: 'Průběžné pořadí podle bodů', color: '#f8fafc', font: { size: 16 } }
+            },
+            scales: {
+                y: { beginAtZero: true, grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                x: { grid: { display: false }, ticks: { color: '#f8fafc', font: { weight: 'bold' } } }
+            }
+        }
+    });
+
+    // 3. LOGIKA VYTVOŘENÍ TABULKY PRO EDITACI
+    function renderTable() {
+        const tbody = document.getElementById('scoresTableBody');
+        tbody.innerHTML = '';
+
+        players.forEach(player => {
+            const tr = document.createElement('tr');
+            
+            let rowHtml = `<td><b>${player.name}</b></td>`;
+            games.forEach(game => {
+                rowHtml += `
+                    <td>
+                        <input type="number" value="${player.scores[game]}" 
+                            onchange="updateScore('${player.id}', '${game}', this.value)">
+                    </td>`;
+            });
+
+            rowHtml += `<td class="total-cell" id="total-${player.id}">${getTotalScore(player)}</td>`;
+            tr.innerHTML = rowHtml;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // Funkce volaná při změně jakékoliv hodnoty v tabulce
+    window.updateScore = function(playerId, game, value) {
+        const player = players.find(p => p.id === playerId);
+        if (player) {
+            player.scores[game] = parseInt(value) || 0;
+            document.getElementById(`total-${playerId}`).innerText = getTotalScore(player);
+            updateDashboard();
+        }
+    };
+
+    // 4. RENDEROVÁNÍ KARET A GRAFU (SEŘAZENO OD 1. MÍSTA)
+    function updateDashboard() {
+        // Vytvoříme seřazenou kopii hráčů (od nejvyššího počtu bodů po nejnižší)
+        const sortedPlayers = [...players].sort((a, b) => getTotalScore(b) - getTotalScore(a));
+
+        // Update Kartiček hráčů nahře
+        const grid = document.getElementById('playersGrid');
+        grid.innerHTML = '';
+
+        sortedPlayers.forEach((player, index) => {
+            const total = getTotalScore(player);
+            const card = document.createElement('div');
+            card.className = `player-card rank-${index + 1}`;
+
+            // Pokud je nahraná fotka, použije se <img>, jinak se zobrazí počáteční písmeno
+            const avatarHtml = player.avatar 
+                ? `<img src="${player.avatar}" alt="${player.name}" class="avatar">`
+                : `<div class="avatar">${player.name.charAt(0).toUpperCase()}</div>`;
+
+            card.innerHTML = `
+                <div class="rank-badge">${index + 1}</div>
+                ${avatarHtml}
+                <div class="player-name">${player.name}</div>
+                <div class="player-score">${total} b</div>
+            `;
+            grid.appendChild(card);
+        });
+
+        // Update Grafu
+        scoreChart.data.labels = sortedPlayers.map(p => p.name);
+        scoreChart.data.datasets[0].data = sortedPlayers.map(p => getTotalScore(p));
+        scoreChart.update();
+    }
+
+    // Prvotní načtení
+    renderTable();
+    updateDashboard();
+</script>
+
+</body>
+</html>
