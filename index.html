@@ -104,7 +104,7 @@
             font-size: 0.9rem;
             transition: all 0.2s;
             flex: 1;
-            min-width: 125px;
+            min-width: 120px;
             text-align: center;
         }
 
@@ -142,4 +142,169 @@
 
         .player-card.rank-1 { border-color: var(--gold); }
         .player-card.rank-2 { border-color: var(--silver); }
-        .player-card.rank
+        .player-card.rank-3 { border-color: var(--bronze); }
+
+        .avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4f46e5, #06b6d4);
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            object-fit: cover;
+        }
+
+        .player-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .player-score {
+            font-size: 1.15rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .rank-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- SEKCE A BOXY --- */
+        .section-box {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            overflow-x: auto;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .top-title { color: var(--gold); }
+        .low-title { color: #38bdf8; }
+        .grand-title { color: #f43f5e; }
+
+        /* --- HARMONOGRAM --- */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .day-card {
+            background-color: var(--match-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .day-header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-date {
+            font-size: 1.15rem;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        .day-name {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            font-weight: bold;
+        }
+
+        .schedule-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 8px 10px;
+            background-color: #162032;
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .schedule-item.tournament {
+            border-left-color: var(--gold);
+        }
+
+        .schedule-item.party {
+            border-left-color: #f43f5e;
+        }
+
+        .schedule-time {
+            font-weight: bold;
+            color: #38bdf8;
+            min-width: 45px;
+            font-size: 0.95rem;
+        }
+
+        .schedule-desc {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-color);
+        }
+
+        .schedule-sub {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: normal;
+            margin-top: 2px;
+        }
+
+        /* --- PAVOUK (BRACKETS) --- */
+        .bracket-rounds {
+            display: flex;
+            gap: 25px;
+            min-width: 920px;
+            align-items: stretch;
+        }
+
+        .round-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            gap: 15px;
+        }
+
+        .round-
