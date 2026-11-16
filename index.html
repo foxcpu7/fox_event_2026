@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FoX Klanový Turnaj - Žebříček</title>
-    <!-- Načtení knihovny Chart.js pro grafy -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>FoX Klanový Turnaj - Žebříček & Pavouk</title>
     <style>
         :root {
             --bg-color: #0f172a;
             --card-bg: #1e293b;
+            --match-bg: #0f172a;
             --accent: #6366f1;
             --accent-hover: #4f46e5;
             --text-color: #f8fafc;
@@ -18,6 +17,8 @@
             --silver: #94a3b8;
             --bronze: #b45309;
             --success: #22c55e;
+            --danger: #ef4444;
+            --border-color: #334155;
         }
 
         body {
@@ -29,30 +30,72 @@
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1300px;
             margin: 0 auto;
         }
 
         h1 {
             text-align: center;
             color: #fff;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             text-transform: uppercase;
             letter-spacing: 2px;
+        }
+
+        h2, h3 {
+            margin-top: 0;
+        }
+
+        /* --- ADMIN LIŠTA NAHOŘE --- */
+        .top-admin-bar {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .btn:hover { background-color: var(--accent-hover); }
+        .btn-success { background-color: var(--success); }
+        .btn-success:hover { background-color: #16a34a; }
+        .btn-danger { background-color: var(--danger); }
+        .btn-danger:hover { background-color: #dc2626; }
+
+        .lock-status {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-muted);
         }
 
         /* --- KARTY HRÁČŮ --- */
         .players-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 15px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+            gap: 12px;
+            margin-bottom: 35px;
         }
 
         .player-card {
             background-color: var(--card-bg);
             border-radius: 12px;
-            padding: 15px 10px;
+            padding: 15px 8px;
             text-align: center;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
             border: 2px solid transparent;
@@ -64,29 +107,29 @@
         .player-card.rank-3 { border-color: var(--bronze); }
 
         .avatar {
-            width: 60px;
-            height: 60px;
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
             background: linear-gradient(135deg, #4f46e5, #06b6d4);
             color: white;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 10px;
+            margin: 0 auto 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.4);
             object-fit: cover;
         }
 
         .player-name {
             font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 5px;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
         }
 
         .player-score {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: bold;
             color: var(--accent);
         }
@@ -96,7 +139,7 @@
             top: -8px;
             right: -8px;
             background: var(--card-bg);
-            border: 1px solid #334155;
+            border: 1px solid var(--border-color);
             border-radius: 50%;
             width: 24px;
             height: 24px;
@@ -107,50 +150,129 @@
             justify-content: center;
         }
 
-        /* --- GRAF --- */
-        .chart-container {
+        /* --- PAVOUK (BRACKETS) --- */
+        .bracket-section {
             background-color: var(--card-bg);
             border-radius: 12px;
             padding: 20px;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            overflow-x: auto;
         }
 
-        /* --- TABULKA A ADMIN PANEL --- */
+        .bracket-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .bracket-title.top-title { color: var(--gold); }
+        .bracket-title.low-title { color: #38bdf8; }
+        .bracket-title.grand-title { color: #f43f5e; }
+
+        .bracket-rounds {
+            display: flex;
+            gap: 30px;
+            min-width: 950px;
+            align-items: stretch;
+        }
+
+        .round-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            gap: 15px;
+        }
+
+        .round-header {
+            text-align: center;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .match-box {
+            background-color: var(--match-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .match-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .wildcard-badge {
+            background-color: rgba(251, 191, 36, 0.15);
+            color: var(--gold);
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.7rem;
+        }
+
+        .match-row {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        select.player-select {
+            flex: 1;
+            background-color: #1e293b;
+            color: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 5px 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        select.player-select:disabled {
+            background-color: #162032;
+            color: #cbd5e1;
+            border-color: transparent;
+            cursor: default;
+            appearance: none;
+        }
+
+        input.match-score {
+            width: 42px;
+            background-color: #1e293b;
+            color: var(--gold);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 5px 4px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+
+        input.match-score:disabled {
+            background-color: #162032;
+            border-color: transparent;
+        }
+
+        /* --- TABULKA BODŮ --- */
         .table-container {
             background-color: var(--card-bg);
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-        }
-
-        .admin-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .btn {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
-        }
-
-        .btn:hover { background-color: var(--accent-hover); }
-        .btn-success { background-color: var(--success); }
-        .btn-success:hover { background-color: #16a34a; }
-
-        .lock-status {
-            font-size: 0.9rem;
-            color: var(--text-muted);
         }
 
         .table-wrapper { overflow-x: auto; }
@@ -163,7 +285,7 @@
 
         th, td {
             padding: 12px;
-            border-bottom: 1px solid #334155;
+            border-bottom: 1px solid var(--border-color);
         }
 
         th {
@@ -172,17 +294,17 @@
             font-weight: 600;
         }
 
-        input[type="number"] {
+        input.table-score {
             width: 50px;
             background-color: #0f172a;
-            border: 1px solid #334155;
+            border: 1px solid var(--border-color);
             color: #fff;
             padding: 5px;
             border-radius: 6px;
             text-align: center;
         }
 
-        input[type="number"]:disabled {
+        input.table-score:disabled {
             background-color: #1e293b;
             color: #64748b;
             border-color: transparent;
@@ -199,27 +321,46 @@
 <div class="container">
     <h1>🏆 FoX Klanový Turnaj</h1>
 
-    <!-- KARTY HRÁČŮ -->
-    <div class="players-grid" id="playersGrid"></div>
-
-    <!-- SLOUPCOVÝ GRAF -->
-    <div class="chart-container">
-        <canvas id="scoreChart"></canvas>
+    <!-- HLAVNÍ OVLÁDACÍ LIŠTA -->
+    <div class="top-admin-bar">
+        <span class="lock-status" id="lockStatus">🔒 Úpravy jsou uzamčeny (pouze pro čtení)</span>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn" id="unlockBtn" onclick="toggleAdmin()">🔒 Odemknout PIN kódem</button>
+            <button class="btn btn-success" onclick="sendToDiscord()">💬 Sdílet pořadí na Discord</button>
+            <button class="btn btn-danger" id="resetBtn" onclick="resetAllData()" style="display: none;">🗑️ Resetovat vše</button>
+        </div>
     </div>
 
-    <!-- TABULKA A ADMIN OVLÁDÁNÍ -->
-    <div class="table-container">
-        <div class="admin-bar">
-            <div>
-                <h2>Zápis bodů</h2>
-                <span class="lock-status" id="lockStatus">🔒 Tabulka je uzamčena pro úpravy</span>
-            </div>
-            <div>
-                <button class="btn" id="unlockBtn" onclick="toggleAdmin()">🔒 Odemknout PIN kódem</button>
-                <button class="btn btn-success" onclick="sendToDiscord()">💬 Sdílet výsledky na Discord</button>
-            </div>
-        </div>
+    <!-- KARTY HRÁČŮ (CELKOVÉ BODY) -->
+    <div class="players-grid" id="playersGrid"></div>
 
+    <!-- TOP BRACKET (HORNÍ PAVOUK + WILD CARD) -->
+    <div class="bracket-section">
+        <div class="bracket-title top-title">
+            <h2>⚔️ TOP BRACKET (Horní pavouk - 9 hráčů)</h2>
+        </div>
+        <div class="bracket-rounds" id="topBracketContainer"></div>
+    </div>
+
+    <!-- LOW BRACKET (SPODNÍ PAVOUK) -->
+    <div class="bracket-section">
+        <div class="bracket-title low-title">
+            <h2>🛡️ LOW BRACKET (Spodní pavouk - Oprava)</h2>
+        </div>
+        <div class="bracket-rounds" id="lowBracketContainer"></div>
+    </div>
+
+    <!-- GRAND FINÁLE -->
+    <div class="bracket-section">
+        <div class="bracket-title grand-title">
+            <h2>👑 GRAND FINÁLE</h2>
+        </div>
+        <div style="max-width: 400px; margin: 0 auto;" id="grandFinalContainer"></div>
+    </div>
+
+    <!-- TABULKA BODŮ Z TURNAJŮ -->
+    <div class="table-container">
+        <h2>📊 Celkový bodový přehled (6 turnajů)</h2>
         <div class="table-wrapper">
             <table>
                 <thead>
@@ -241,12 +382,11 @@
 </div>
 
 <script>
-    // Správce PIN kódu (můžete si ho změnit na cokoliv jiného)
-    const ADMIN_PIN = "5560"; 
+    const ADMIN_PIN = "1234"; 
     let isAdminUnlocked = false;
 
-    // Data hráčů
-    const players = [
+    // Výchozí seznam hráčů
+    const defaultPlayers = [
         { id: 'dany', name: 'DaNY', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
         { id: 'fullhouse', name: 'Fullhouse', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
         { id: 'spider', name: 'Spider', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
@@ -258,41 +398,162 @@
         { id: 'peta', name: 'Peta', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } }
     ];
 
+    // Výchozí struktura pavouka pro 9 hráčů (1 Wild Card zápas + 7 nasazených přímo do Top 8)
+    const defaultBrackets = {
+        // TOP BRACKET
+        tb_prelim: [
+            { id: 'tb_p1', title: 'Předkolo (O postup do Top 8)', badge: 'WILD CARD ZÁPAS', p1: '', s1: 0, p2: '', s2: 0 }
+        ],
+        tb_qf: [
+            { id: 'tb_qf1', title: 'Čtvrtfinále 1', badge: '7x WILD CARD NASAZENÍ', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'tb_qf2', title: 'Čtvrtfinále 2', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'tb_qf3', title: 'Čtvrtfinále 3', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'tb_qf4', title: 'Čtvrtfinále 4', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+        ],
+        tb_sf: [
+            { id: 'tb_sf1', title: 'Semifinále 1', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'tb_sf2', title: 'Semifinále 2', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+        ],
+        tb_final: [
+            { id: 'tb_f1', title: 'Finále Top Bracketu', badge: 'POSTUP DO GRAND FINÁLE', p1: '', s1: 0, p2: '', s2: 0 }
+        ],
+
+        // LOW BRACKET (9 hráčů -> 1 vypadne v předkole do LB R1, 4 z ČF jdou do LB)
+        lb_r1: [
+            { id: 'lb_r1_1', title: '1. kolo oprav (Poražený z Předkola vs. ČF)', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'lb_r1_2', title: '1. kolo oprav B', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+        ],
+        lb_r2: [
+            { id: 'lb_r2_1', title: '2. kolo oprav A', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'lb_r2_2', title: '2. kolo oprav B', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+        ],
+        lb_sf: [
+            { id: 'lb_sf1', title: 'Semifinále Low Bracketu', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+        ],
+        lb_final: [
+            { id: 'lb_f1', title: 'Finále Low Bracketu', badge: 'O POSTUP DO GRAND FINÁLE', p1: '', s1: 0, p2: '', s2: 0 }
+        ],
+
+        // GRAND FINÁLE
+        grand_final: [
+            { id: 'gf_1', title: 'FINÁLE TURNAJE (Vítěz TB vs. Vítěz LB)', badge: 'ŠAMPION', p1: '', s1: 0, p2: '', s2: 0 }
+        ]
+    };
+
+    // Načtení uložených dat z prohlížeče (nebo použití výchozích)
+    let players = JSON.parse(localStorage.getItem('fox_players')) || JSON.parse(JSON.stringify(defaultPlayers));
+    let brackets = JSON.parse(localStorage.getItem('fox_brackets')) || JSON.parse(JSON.stringify(defaultBrackets));
+
     const games = ['sipky', 'mk', 'fifa', 'rabbits', 'beatsaber', 'kviz'];
+
+    function saveData() {
+        localStorage.setItem('fox_players', JSON.stringify(players));
+        localStorage.setItem('fox_brackets', JSON.stringify(brackets));
+    }
 
     function getTotalScore(player) {
         return games.reduce((sum, game) => sum + (player.scores[game] || 0), 0);
     }
 
-    // Inicializace grafu
-    const ctx = document.getElementById('scoreChart').getContext('2d');
-    let scoreChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: [],
-            datasets: [{
-                label: 'Celkový počet bodů',
-                data: [],
-                backgroundColor: 'rgba(99, 102, 241, 0.85)',
-                borderColor: 'rgba(99, 102, 241, 1)',
-                borderWidth: 2,
-                borderRadius: 8
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: false },
-                title: { display: true, text: 'Průběžné pořadí klanu', color: '#f8fafc', font: { size: 16 } }
-            },
-            scales: {
-                y: { beginAtZero: true, grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
-                x: { grid: { display: false }, ticks: { color: '#f8fafc', font: { weight: 'bold' } } }
-            }
-        }
-    });
+    // Generování HTML pro jeden zápas v pavouku
+    function createMatchHtml(sectionKey, index, match) {
+        const disabledAttr = isAdminUnlocked ? '' : 'disabled';
+        
+        // Možnosti hráčů pro rozbalovací seznam
+        const buildOptions = (selectedVal) => {
+            let opts = `<option value="">-- Vybrat hráče --</option>`;
+            players.forEach(p => {
+                const isSel = p.name === selectedVal ? 'selected' : '';
+                opts += `<option value="${p.name}" ${isSel}>${p.name}</option>`;
+            });
+            return opts;
+        };
 
-    // Vykreslení tabulky
+        const badgeHtml = match.badge ? `<span class="wildcard-badge">${match.badge}</span>` : '';
+
+        return `
+            <div class="match-box">
+                <div class="match-label">
+                    <span>${match.title}</span>
+                    ${badgeHtml}
+                </div>
+                <div class="match-row">
+                    <select class="player-select" ${disabledAttr} onchange="updateMatch('${sectionKey}', ${index}, 'p1', this.value)">
+                        ${buildOptions(match.p1)}
+                    </select>
+                    <input type="number" class="match-score" value="${match.s1}" ${disabledAttr} onchange="updateMatch('${sectionKey}', ${index}, 's1', this.value)">
+                </div>
+                <div class="match-row">
+                    <select class="player-select" ${disabledAttr} onchange="updateMatch('${sectionKey}', ${index}, 'p2', this.value)">
+                        ${buildOptions(match.p2)}
+                    </select>
+                    <input type="number" class="match-score" value="${match.s2}" ${disabledAttr} onchange="updateMatch('${sectionKey}', ${index}, 's2', this.value)">
+                </div>
+            </div>
+        `;
+    }
+
+    // Vykreslení všech pavouků
+    function renderBrackets() {
+        // TOP BRACKET
+        const tbContainer = document.getElementById('topBracketContainer');
+        tbContainer.innerHTML = `
+            <div class="round-column">
+                <div class="round-header">Předkolo (Wild Card)</div>
+                ${brackets.tb_prelim.map((m, i) => createMatchHtml('tb_prelim', i, m)).join('')}
+            </div>
+            <div class="round-column">
+                <div class="round-header">Čtvrtfinále (Top 8)</div>
+                ${brackets.tb_qf.map((m, i) => createMatchHtml('tb_qf', i, m)).join('')}
+            </div>
+            <div class="round-column">
+                <div class="round-header">Semifinále TB</div>
+                ${brackets.tb_sf.map((m, i) => createMatchHtml('tb_sf', i, m)).join('')}
+            </div>
+            <div class="round-column">
+                <div class="round-header">Finále TB</div>
+                ${brackets.tb_final.map((m, i) => createMatchHtml('tb_final', i, m)).join('')}
+            </div>
+        `;
+
+        // LOW BRACKET
+        const lbContainer = document.getElementById('lowBracketContainer');
+        lbContainer.innerHTML = `
+            <div class="round-column">
+                <div class="round-header">1. kolo oprav</div>
+                ${brackets.lb_r1.map((m, i) => createMatchHtml('lb_r1', i, m)).join('')}
+            </div>
+            <div class="round-column">
+                <div class="round-header">2. kolo oprav</div>
+                ${brackets.lb_r2.map((m, i) => createMatchHtml('lb_r2', i, m)).join('')}
+            </div>
+            <div class="round-column">
+                <div class="round-header">Semifinále LB</div>
+                ${brackets.lb_sf.map((m, i) => createMatchHtml('lb_sf', i, m)).join('')}
+            </div>
+            <div class="round-column">
+                <div class="round-header">Finále LB</div>
+                ${brackets.lb_final.map((m, i) => createMatchHtml('lb_final', i, m)).join('')}
+            </div>
+        `;
+
+        // GRAND FINÁLE
+        const gfContainer = document.getElementById('grandFinalContainer');
+        gfContainer.innerHTML = brackets.grand_final.map((m, i) => createMatchHtml('grand_final', i, m)).join('');
+    }
+
+    // Úprava zápasu v pavouku
+    window.updateMatch = function(sectionKey, index, field, value) {
+        if (!isAdminUnlocked) return;
+        if (field === 's1' || field === 's2') {
+            brackets[sectionKey][index][field] = parseInt(value) || 0;
+        } else {
+            brackets[sectionKey][index][field] = value;
+        }
+        saveData();
+    };
+
+    // Vykreslení tabulky bodů
     function renderTable() {
         const tbody = document.getElementById('scoresTableBody');
         tbody.innerHTML = '';
@@ -305,7 +566,7 @@
                 const disabledAttr = isAdminUnlocked ? '' : 'disabled';
                 rowHtml += `
                     <td>
-                        <input type="number" value="${player.scores[game]}" ${disabledAttr}
+                        <input type="number" class="table-score" value="${player.scores[game]}" ${disabledAttr}
                             onchange="updateScore('${player.id}', '${game}', this.value)">
                     </td>`;
             });
@@ -322,34 +583,14 @@
         if (player) {
             player.scores[game] = parseInt(value) || 0;
             document.getElementById(`total-${playerId}`).innerText = getTotalScore(player);
-            updateDashboard();
+            saveData();
+            updateCards();
         }
     };
 
-    // Správa PIN zámku
-    window.toggleAdmin = function() {
-        if (!isAdminUnlocked) {
-            const pin = prompt("Zadejte administrátorský PIN:");
-            if (pin === ADMIN_PIN) {
-                isAdminUnlocked = true;
-                document.getElementById('lockStatus').innerText = "🔓 Tabulka je odemčena pro úpravy";
-                document.getElementById('unlockBtn').innerText = "🔒 Zamknout zpět";
-                renderTable();
-            } else if (pin !== null) {
-                alert("Nesprávný PIN!");
-            }
-        } else {
-            isAdminUnlocked = false;
-            document.getElementById('lockStatus').innerText = "🔒 Tabulka je uzamčena pro úpravy";
-            document.getElementById('unlockBtn').innerText = "🔒 Odemknout PIN kódem";
-            renderTable();
-        }
-    };
-
-    // Aktualizace karet a grafu
-    function updateDashboard() {
+    // Aktualizace karet nahoře
+    function updateCards() {
         const sortedPlayers = [...players].sort((a, b) => getTotalScore(b) - getTotalScore(a));
-
         const grid = document.getElementById('playersGrid');
         grid.innerHTML = '';
 
@@ -370,16 +611,50 @@
             `;
             grid.appendChild(card);
         });
-
-        scoreChart.data.labels = sortedPlayers.map(p => p.name);
-        scoreChart.data.datasets[0].data = sortedPlayers.map(p => getTotalScore(p));
-        scoreChart.update();
     }
 
-    // Odeslání na Discord (pomocí Discord Webhooku)
+    // Správa PIN zámku
+    window.toggleAdmin = function() {
+        if (!isAdminUnlocked) {
+            const pin = prompt("Zadejte administrátorský PIN:");
+            if (pin === ADMIN_PIN) {
+                isAdminUnlocked = true;
+                document.getElementById('lockStatus').innerText = "🔓 Režim úprav aktivní (Pavouk i tabulka jsou odemčené)";
+                document.getElementById('unlockBtn').innerText = "🔒 Zamknout zpět";
+                document.getElementById('resetBtn').style.display = "inline-block";
+                renderBrackets();
+                renderTable();
+            } else if (pin !== null) {
+                alert("Nesprávný PIN!");
+            }
+        } else {
+            isAdminUnlocked = false;
+            document.getElementById('lockStatus').innerText = "🔒 Úpravy jsou uzamčeny (pouze pro čtení)";
+            document.getElementById('unlockBtn').innerText = "🔒 Odemknout PIN kódem";
+            document.getElementById('resetBtn').style.display = "none";
+            renderBrackets();
+            renderTable();
+        }
+    };
+
+    // Reset dat
+    window.resetAllData = function() {
+        if (!isAdminUnlocked) return;
+        if (confirm("Opravdu chcete vymazat všechny výsledky v pavouku i tabulce?")) {
+            localStorage.removeItem('fox_players');
+            localStorage.removeItem('fox_brackets');
+            players = JSON.parse(JSON.stringify(defaultPlayers));
+            brackets = JSON.parse(JSON.stringify(defaultBrackets));
+            renderBrackets();
+            renderTable();
+            updateCards();
+        }
+    };
+
+    // Odeslání na Discord
     window.sendToDiscord = function() {
         const sortedPlayers = [...players].sort((a, b) => getTotalScore(b) - getTotalScore(a));
-        let message = "🏆 **Aktuální stav FoX klanového turnaje:**\n```";
+        let message = "🏆 **Aktuální celkové pořadí FoX turnaje:**\n```";
         sortedPlayers.forEach((p, i) => {
             message += `\n${i + 1}. ${p.name.padEnd(10, ' ')} - ${getTotalScore(p)} bodů`;
         });
@@ -396,15 +671,17 @@
             if (response.ok) {
                 alert("Výsledky byly úspěšně odeslány na Discord!");
             } else {
-                alert("Chyba při odesílání na Discord. Zkontrolujte webhook URL.");
+                alert("Chyba při odesílání na Discord.");
             }
         }).catch(err => {
             alert("Chyba připojení: " + err);
         });
     };
 
+    // Prvotní vykreslení
+    updateCards();
+    renderBrackets();
     renderTable();
-    updateDashboard();
 </script>
 
 </body>
