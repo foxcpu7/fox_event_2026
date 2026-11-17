@@ -30,7 +30,7 @@
         }
 
         .container {
-            max-width: 1350px;
+            max-width: 1450px;
             margin: 0 auto;
         }
 
@@ -262,13 +262,8 @@
             border-left: 3px solid var(--accent);
         }
 
-        .schedule-item.tournament {
-            border-left-color: var(--gold);
-        }
-
-        .schedule-item.party {
-            border-left-color: #f43f5e;
-        }
+        .schedule-item.tournament { border-left-color: var(--gold); }
+        .schedule-item.party { border-left-color: #f43f5e; }
 
         .schedule-time {
             font-weight: bold;
@@ -294,8 +289,8 @@
         /* --- PAVOUK (BRACKETS) --- */
         .bracket-rounds {
             display: flex;
-            gap: 25px;
-            min-width: 920px;
+            gap: 20px;
+            min-width: 1120px;
             align-items: stretch;
         }
 
@@ -309,7 +304,7 @@
 
         .round-header {
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text-muted);
@@ -328,20 +323,22 @@
         }
 
         .match-label {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             color: var(--text-muted);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 4px;
         }
 
         .badge {
             background-color: rgba(251, 191, 36, 0.15);
             color: var(--gold);
-            padding: 2px 8px;
+            padding: 2px 6px;
             border-radius: 4px;
             font-weight: bold;
-            font-size: 0.75rem;
+            font-size: 0.68rem;
+            white-space: nowrap;
         }
 
         .badge-green {
@@ -369,6 +366,7 @@
             font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
+            min-width: 110px;
         }
 
         select.player-select:disabled {
@@ -380,7 +378,7 @@
         }
 
         input.score-input {
-            width: 55px;
+            width: 48px;
             background-color: #1e293b;
             color: var(--gold);
             border: 1px solid var(--border-color);
@@ -500,7 +498,7 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- NOVÁ ZÁLOŽKA: HARMONOGRAM                                  -->
+    <!-- 2. ZÁLOŽKA: HARMONOGRAM                                   -->
     <!-- ========================================================= -->
     <div id="tab-schedule" class="tab-content">
         <div class="section-box">
@@ -509,7 +507,6 @@
                 <span class="badge">FoX LAN & Turnajový víkend</span>
             </div>
             <div class="schedule-grid">
-                <!-- ČTVRTEK -->
                 <div class="day-card">
                     <div class="day-header">
                         <span class="day-date">19. 11.</span>
@@ -529,7 +526,6 @@
                     </div>
                 </div>
 
-                <!-- PÁTEK -->
                 <div class="day-card">
                     <div class="day-header">
                         <span class="day-date">20. 11.</span>
@@ -553,7 +549,6 @@
                     </div>
                 </div>
 
-                <!-- SOBOTA -->
                 <div class="day-card">
                     <div class="day-header">
                         <span class="day-date">21. 11.</span>
@@ -577,7 +572,6 @@
                     </div>
                 </div>
 
-                <!-- NEDĚLE -->
                 <div class="day-card">
                     <div class="day-header">
                         <span class="day-date">22. 11.</span>
@@ -593,19 +587,21 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- 2. ZÁLOŽKA: FIFA (TOP & LOW BRACKET + WILD CARD)          -->
+    <!-- 3. ZÁLOŽKA: FIFA (TOP & LOW BRACKET + WILD CARD)          -->
     <!-- ========================================================= -->
     <div id="tab-fifa" class="tab-content">
         <div class="section-box">
             <div class="section-title top-title">
                 <h2>⚔️ TOP BRACKET (Horní pavouk - 9 hráčů)</h2>
+                <span class="badge">Vítěz předkola do ČF • Poražený do Předkola LB</span>
             </div>
             <div class="bracket-rounds" id="topBracketContainer"></div>
         </div>
 
         <div class="section-box">
             <div class="section-title low-title">
-                <h2>🛡️ LOW BRACKET (Spodní pavouk - Oprava)</h2>
+                <h2>🛡️ LOW BRACKET (Spodní pavouk - Oprava pro všechny)</h2>
+                <span class="badge">Poražený z předkola TB hraje Předkolo LB proti poraženému ze ČF</span>
             </div>
             <div class="bracket-rounds" id="lowBracketContainer"></div>
         </div>
@@ -619,7 +615,7 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- 3. ZÁLOŽKA: MORTAL KOMBAT (2 SKUPINY + PLAYOFF)            -->
+    <!-- 4. ZÁLOŽKA: MORTAL KOMBAT (2 SKUPINY + PLAYOFF)            -->
     <!-- ========================================================= -->
     <div id="tab-mk" class="tab-content">
         <div class="two-col-grid">
@@ -669,7 +665,7 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- 4. ZÁLOŽKA: BEAT SABER (2 POKUSY - 6MÍSTNÉ SKÓRE)          -->
+    <!-- 5. ZÁLOŽKA: BEAT SABER (2 POKUSY - 6MÍSTNÉ SKÓRE)          -->
     <!-- ========================================================= -->
     <div id="tab-beatsaber" class="tab-content">
         <div class="section-box">
@@ -695,7 +691,7 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- 5. ZÁLOŽKA: RABBIDS (2 KOLA PO 3 + FINÁLE TOP 4)           -->
+    <!-- 6. ZÁLOŽKA: RABBIDS (2 KOLA PO 3 + FINÁLE TOP 4)           -->
     <!-- ========================================================= -->
     <div id="tab-rabbits" class="tab-content">
         <div class="two-col-grid">
@@ -739,7 +735,7 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- 6. ZÁLOŽKA: ŠIPKY (RYCHLÝ HIGH SCORE NA 7 KOL)            -->
+    <!-- 7. ZÁLOŽKA: ŠIPKY (RYCHLÝ HIGH SCORE NA 7 KOL)            -->
     <!-- ========================================================= -->
     <div id="tab-darts" class="tab-content">
         <div class="section-box">
@@ -763,7 +759,7 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- 7. ZÁLOŽKA: KVÍZ (POUZE VÝSLEDKY)                         -->
+    <!-- 8. ZÁLOŽKA: KVÍZ (POUZE VÝSLEDKY)                         -->
     <!-- ========================================================= -->
     <div id="tab-quiz" class="tab-content">
         <div class="section-box">
@@ -804,31 +800,49 @@
         { id: 'peta', name: 'Peta', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } }
     ];
 
-    // 2. FIFA PAVOUK
+    // 2. FIFA PAVOUK (9 HRÁČŮ - PORAŽENÝ Z PŘEDKOLA JDE DO PŘEDKOLA LB)
     const defaultFifa = {
-        tb_prelim: [{ id: 'tb_p1', title: 'Předkolo (O Top 8)', badge: 'WILD CARD ZÁPAS', p1: '', s1: 0, p2: '', s2: 0 }],
+        // TOP BRACKET
+        tb_prelim: [
+            { id: 'tb_p1', title: 'Předkolo TB (2 hráči)', badge: 'VÍTĚZ DO ČF 1 • PORAŽENÝ DO LB', p1: '', s1: 0, p2: '', s2: 0 }
+        ],
         tb_qf: [
-            { id: 'tb_qf1', title: 'Čtvrtfinále 1', badge: 'WILD CARD NASAZENÍ', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'tb_qf2', title: 'Čtvrtfinále 2', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'tb_qf3', title: 'Čtvrtfinále 3', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'tb_qf4', title: 'Čtvrtfinále 4', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+            { id: 'tb_qf1', title: 'Čtvrtfinále 1 (Wild Card vs Vítěz Předkola)', badge: '7x WILD CARD', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'tb_qf2', title: 'Čtvrtfinále 2 (Wild Card vs Wild Card)', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'tb_qf3', title: 'Čtvrtfinále 3 (Wild Card vs Wild Card)', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'tb_qf4', title: 'Čtvrtfinále 4 (Wild Card vs Wild Card)', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
         ],
         tb_sf: [
-            { id: 'tb_sf1', title: 'Semifinále 1', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'tb_sf2', title: 'Semifinále 2', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+            { id: 'tb_sf1', title: 'Semifinále 1 (Vítěz ČF1 vs ČF2)', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'tb_sf2', title: 'Semifinále 2 (Vítěz ČF3 vs ČF4)', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
         ],
-        tb_final: [{ id: 'tb_f1', title: 'Finále Top Bracketu', badge: 'DO GRAND FINÁLE', p1: '', s1: 0, p2: '', s2: 0 }],
+        tb_final: [
+            { id: 'tb_f1', title: 'Finále Top Bracketu', badge: 'POSTUP DO GRAND FINÁLE', p1: '', s1: 0, p2: '', s2: 0 }
+        ],
+
+        // LOW BRACKET (Poražený z Předkola TB + 4 poražení ze ČF TB + 2 poražení ze SF TB + poražený z Finále TB)
+        lb_prelim: [
+            { id: 'lb_p1', title: 'Předkolo LB (Poražený z Předkola TB vs Poražený ČF1)', badge: '2. ŠANCE PRO PŘEDKOLO', p1: '', s1: 0, p2: '', s2: 0 }
+        ],
         lb_r1: [
-            { id: 'lb_r1_1', title: '1. kolo oprav A', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'lb_r1_2', title: '1. kolo oprav B', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+            { id: 'lb_r1_1', title: '1. kolo oprav A (Vítěz Předkola LB vs Poražený ČF2)', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'lb_r1_2', title: '1. kolo oprav B (Poražený ČF3 vs Poražený ČF4)', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
         ],
         lb_r2: [
-            { id: 'lb_r2_1', title: '2. kolo oprav A', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'lb_r2_2', title: '2. kolo oprav B', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+            { id: 'lb_r2_1', title: '2. kolo oprav A (Vítěz LB 1A vs Poražený SF2)', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'lb_r2_2', title: '2. kolo oprav B (Vítěz LB 1B vs Poražený SF1)', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
         ],
-        lb_sf: [{ id: 'lb_sf1', title: 'Semifinále Low Bracketu', badge: '', p1: '', s1: 0, p2: '', s2: 0 }],
-        lb_final: [{ id: 'lb_f1', title: 'Finále Low Bracketu', badge: 'DO GRAND FINÁLE', p1: '', s1: 0, p2: '', s2: 0 }],
-        grand_final: [{ id: 'gf_1', title: 'GRAND FINÁLE FIFA', badge: 'ŠAMPION', p1: '', s1: 0, p2: '', s2: 0 }]
+        lb_sf: [
+            { id: 'lb_sf1', title: 'Semifinále Low Bracketu', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+        ],
+        lb_final: [
+            { id: 'lb_f1', title: 'Finále Low Bracketu (Vítěz LB SF vs Poražený TB Finále)', badge: 'DO GRAND FINÁLE', p1: '', s1: 0, p2: '', s2: 0 }
+        ],
+
+        // GRAND FINÁLE
+        grand_final: [
+            { id: 'gf_1', title: 'GRAND FINÁLE FIFA (Vítěz TB vs Vítěz LB)', badge: 'ŠAMPION FIFA', p1: '', s1: 0, p2: '', s2: 0 }
+        ]
     };
 
     // 3. MORTAL KOMBAT DATA
@@ -887,25 +901,25 @@
         defaultQuiz[p.id] = 0;
     });
 
-    // NAČTENÍ Z LOCALSTORAGE
-    let players = JSON.parse(localStorage.getItem('fox_v4_players')) || JSON.parse(JSON.stringify(defaultPlayers));
-    let fifaData = JSON.parse(localStorage.getItem('fox_v4_fifa')) || JSON.parse(JSON.stringify(defaultFifa));
-    let mkData = JSON.parse(localStorage.getItem('fox_v4_mk')) || JSON.parse(JSON.stringify(defaultMK));
-    let bsData = JSON.parse(localStorage.getItem('fox_v4_bs')) || JSON.parse(JSON.stringify(defaultBeatSaber));
-    let rabbitsData = JSON.parse(localStorage.getItem('fox_v4_rabbits')) || JSON.parse(JSON.stringify(defaultRabbits));
-    let dartsData = JSON.parse(localStorage.getItem('fox_v4_darts')) || JSON.parse(JSON.stringify(defaultDarts));
-    let quizData = JSON.parse(localStorage.getItem('fox_v4_quiz')) || JSON.parse(JSON.stringify(defaultQuiz));
+    // NAČTENÍ Z LOCALSTORAGE (v5)
+    let players = JSON.parse(localStorage.getItem('fox_v5_players')) || JSON.parse(JSON.stringify(defaultPlayers));
+    let fifaData = JSON.parse(localStorage.getItem('fox_v5_fifa')) || JSON.parse(JSON.stringify(defaultFifa));
+    let mkData = JSON.parse(localStorage.getItem('fox_v5_mk')) || JSON.parse(JSON.stringify(defaultMK));
+    let bsData = JSON.parse(localStorage.getItem('fox_v5_bs')) || JSON.parse(JSON.stringify(defaultBeatSaber));
+    let rabbitsData = JSON.parse(localStorage.getItem('fox_v5_rabbits')) || JSON.parse(JSON.stringify(defaultRabbits));
+    let dartsData = JSON.parse(localStorage.getItem('fox_v5_darts')) || JSON.parse(JSON.stringify(defaultDarts));
+    let quizData = JSON.parse(localStorage.getItem('fox_v5_quiz')) || JSON.parse(JSON.stringify(defaultQuiz));
 
     const games = ['sipky', 'mk', 'fifa', 'rabbits', 'beatsaber', 'kviz'];
 
     function saveAll() {
-        localStorage.setItem('fox_v4_players', JSON.stringify(players));
-        localStorage.setItem('fox_v4_fifa', JSON.stringify(fifaData));
-        localStorage.setItem('fox_v4_mk', JSON.stringify(mkData));
-        localStorage.setItem('fox_v4_bs', JSON.stringify(bsData));
-        localStorage.setItem('fox_v4_rabbits', JSON.stringify(rabbitsData));
-        localStorage.setItem('fox_v4_darts', JSON.stringify(dartsData));
-        localStorage.setItem('fox_v4_quiz', JSON.stringify(quizData));
+        localStorage.setItem('fox_v5_players', JSON.stringify(players));
+        localStorage.setItem('fox_v5_fifa', JSON.stringify(fifaData));
+        localStorage.setItem('fox_v5_mk', JSON.stringify(mkData));
+        localStorage.setItem('fox_v5_bs', JSON.stringify(bsData));
+        localStorage.setItem('fox_v5_rabbits', JSON.stringify(rabbitsData));
+        localStorage.setItem('fox_v5_darts', JSON.stringify(dartsData));
+        localStorage.setItem('fox_v5_quiz', JSON.stringify(quizData));
     }
 
     window.switchTab = function(tabId, btnElement) {
@@ -1020,12 +1034,13 @@
 
     function renderFifa() {
         document.getElementById('topBracketContainer').innerHTML = `
-            <div class="round-column"><div class="round-header">Předkolo (Wild Card)</div>${fifaData.tb_prelim.map((m, i) => createMatchBox('fifa', 'tb_prelim', i, m)).join('')}</div>
+            <div class="round-column"><div class="round-header">Předkolo TB (2 hráči)</div>${fifaData.tb_prelim.map((m, i) => createMatchBox('fifa', 'tb_prelim', i, m)).join('')}</div>
             <div class="round-column"><div class="round-header">Čtvrtfinále (Top 8)</div>${fifaData.tb_qf.map((m, i) => createMatchBox('fifa', 'tb_qf', i, m)).join('')}</div>
             <div class="round-column"><div class="round-header">Semifinále TB</div>${fifaData.tb_sf.map((m, i) => createMatchBox('fifa', 'tb_sf', i, m)).join('')}</div>
             <div class="round-column"><div class="round-header">Finále TB</div>${fifaData.tb_final.map((m, i) => createMatchBox('fifa', 'tb_final', i, m)).join('')}</div>
         `;
         document.getElementById('lowBracketContainer').innerHTML = `
+            <div class="round-column"><div class="round-header">Předkolo LB (Oprava)</div>${fifaData.lb_prelim.map((m, i) => createMatchBox('fifa', 'lb_prelim', i, m)).join('')}</div>
             <div class="round-column"><div class="round-header">1. kolo oprav</div>${fifaData.lb_r1.map((m, i) => createMatchBox('fifa', 'lb_r1', i, m)).join('')}</div>
             <div class="round-column"><div class="round-header">2. kolo oprav</div>${fifaData.lb_r2.map((m, i) => createMatchBox('fifa', 'lb_r2', i, m)).join('')}</div>
             <div class="round-column"><div class="round-header">Semifinále LB</div>${fifaData.lb_sf.map((m, i) => createMatchBox('fifa', 'lb_sf', i, m)).join('')}</div>
@@ -1131,7 +1146,7 @@
         renderBeatSaber();
     };
 
-    // 5. RABBIDS (2 KOLA PO 3 SKUPINÁCH + FINÁLE TOP 4)
+    // 5. RABBIDS
     function renderRabbits() {
         const disabledAttr = isAdminUnlocked ? '' : 'disabled';
         const roundsContainer = document.getElementById('rabbitsRoundsContainer');
@@ -1232,7 +1247,7 @@
         saveAll();
     };
 
-    // 6. ŠIPKY (RYCHLÝ HIGH SCORE)
+    // 6. ŠIPKY
     function renderDarts() {
         const tbody = document.getElementById('dartsBody');
         tbody.innerHTML = '';
@@ -1262,7 +1277,7 @@
         renderDarts();
     };
 
-    // 7. KVÍZ (POUZE VÝSLEDKY)
+    // 7. KVÍZ
     function renderQuiz() {
         const tbody = document.getElementById('quizBody');
         tbody.innerHTML = '';
@@ -1327,13 +1342,13 @@
     window.resetAllData = function() {
         if (!isAdminUnlocked) return;
         if (confirm("Opravdu chcete vymazat všechna data ze všech turnajů?")) {
-            localStorage.removeItem('fox_v4_players');
-            localStorage.removeItem('fox_v4_fifa');
-            localStorage.removeItem('fox_v4_mk');
-            localStorage.removeItem('fox_v4_bs');
-            localStorage.removeItem('fox_v4_rabbits');
-            localStorage.removeItem('fox_v4_darts');
-            localStorage.removeItem('fox_v4_quiz');
+            localStorage.removeItem('fox_v5_players');
+            localStorage.removeItem('fox_v5_fifa');
+            localStorage.removeItem('fox_v5_mk');
+            localStorage.removeItem('fox_v5_bs');
+            localStorage.removeItem('fox_v5_rabbits');
+            localStorage.removeItem('fox_v5_darts');
+            localStorage.removeItem('fox_v5_quiz');
             players = JSON.parse(JSON.stringify(defaultPlayers));
             fifaData = JSON.parse(JSON.stringify(defaultFifa));
             mkData = JSON.parse(JSON.stringify(defaultMK));
