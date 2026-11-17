@@ -492,7 +492,7 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- 1. ZÁLOŽKA: CELKOVÉ POŘADÍ (AUTOMATICKY POČÍTANÉ)         -->
+    <!-- 1. ZÁLOŽKA: CELKOVÉ POŘADÍ                                -->
     <!-- ========================================================= -->
     <div id="tab-overall" class="tab-content active">
         <div class="players-grid" id="playersGrid"></div>
@@ -828,14 +828,14 @@
     let isAdminUnlocked = false;
 
     const defaultPlayers = [
-        { id: 'dany', name: 'DaNY', avatar: 'KILD.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'dany', name: 'DaNY', avatar: 'dany.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
         { id: 'fullhouse', name: 'Fullhouse', avatar: 'Fullhouse.jpg', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
         { id: 'spider', name: 'Spider', avatar: 'Spider.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
         { id: 'vjgodlike', name: 'VJgodlike', avatar: 'VJgodlike.jpg', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
         { id: 'machy', name: 'Machy', avatar: 'Machy.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
         { id: 'rami', name: 'Rami', avatar: 'Rami.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
         { id: 'hayha', name: 'Hayha', avatar: 'Hayha.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'slapy', name: 'Slapy', avatar: 'Deacon.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'slapy', name: 'Slapy', avatar: 'slapy.jpg', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
         { id: 'peta', name: 'Peta', avatar: 'Peta.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } }
     ];
 
@@ -913,25 +913,25 @@
         defaultQuiz[p.id] = 0;
     });
 
-    // NAČTENÍ Z LOCALSTORAGE (v10)
-    let players = JSON.parse(localStorage.getItem('fox_v10_players')) || JSON.parse(JSON.stringify(defaultPlayers));
-    let fifaData = JSON.parse(localStorage.getItem('fox_v10_fifa')) || JSON.parse(JSON.stringify(defaultFifa));
-    let mkData = JSON.parse(localStorage.getItem('fox_v10_mk')) || JSON.parse(JSON.stringify(defaultMK));
-    let bsData = JSON.parse(localStorage.getItem('fox_v10_bs')) || JSON.parse(JSON.stringify(defaultBeatSaber));
-    let rabbitsData = JSON.parse(localStorage.getItem('fox_v10_rabbits')) || JSON.parse(JSON.stringify(defaultRabbits));
-    let dartsData = JSON.parse(localStorage.getItem('fox_v10_darts')) || JSON.parse(JSON.stringify(defaultDarts));
-    let quizData = JSON.parse(localStorage.getItem('fox_v10_quiz')) || JSON.parse(JSON.stringify(defaultQuiz));
+    // NAČTENÍ Z LOCALSTORAGE (v11)
+    let players = JSON.parse(localStorage.getItem('fox_v11_players')) || JSON.parse(JSON.stringify(defaultPlayers));
+    let fifaData = JSON.parse(localStorage.getItem('fox_v11_fifa')) || JSON.parse(JSON.stringify(defaultFifa));
+    let mkData = JSON.parse(localStorage.getItem('fox_v11_mk')) || JSON.parse(JSON.stringify(defaultMK));
+    let bsData = JSON.parse(localStorage.getItem('fox_v11_bs')) || JSON.parse(JSON.stringify(defaultBeatSaber));
+    let rabbitsData = JSON.parse(localStorage.getItem('fox_v11_rabbits')) || JSON.parse(JSON.stringify(defaultRabbits));
+    let dartsData = JSON.parse(localStorage.getItem('fox_v11_darts')) || JSON.parse(JSON.stringify(defaultDarts));
+    let quizData = JSON.parse(localStorage.getItem('fox_v11_quiz')) || JSON.parse(JSON.stringify(defaultQuiz));
 
     const games = ['sipky', 'mk', 'fifa', 'rabbits', 'beatsaber', 'kviz'];
 
     function saveAll() {
-        localStorage.setItem('fox_v10_players', JSON.stringify(players));
-        localStorage.setItem('fox_v10_fifa', JSON.stringify(fifaData));
-        localStorage.setItem('fox_v10_mk', JSON.stringify(mkData));
-        localStorage.setItem('fox_v10_bs', JSON.stringify(bsData));
-        localStorage.setItem('fox_v10_rabbits', JSON.stringify(rabbitsData));
-        localStorage.setItem('fox_v10_darts', JSON.stringify(dartsData));
-        localStorage.setItem('fox_v10_quiz', JSON.stringify(quizData));
+        localStorage.setItem('fox_v11_players', JSON.stringify(players));
+        localStorage.setItem('fox_v11_fifa', JSON.stringify(fifaData));
+        localStorage.setItem('fox_v11_mk', JSON.stringify(mkData));
+        localStorage.setItem('fox_v11_bs', JSON.stringify(bsData));
+        localStorage.setItem('fox_v11_rabbits', JSON.stringify(rabbitsData));
+        localStorage.setItem('fox_v11_darts', JSON.stringify(dartsData));
+        localStorage.setItem('fox_v11_quiz', JSON.stringify(quizData));
     }
 
     function calculatePointsFromStandings(standingsList) {
@@ -1484,13 +1484,13 @@
     window.resetAllData = function() {
         if (!isAdminUnlocked) return;
         if (confirm("Opravdu chcete vymazat všechna data ze všech turnajů?")) {
-            localStorage.removeItem('fox_v10_players');
-            localStorage.removeItem('fox_v10_fifa');
-            localStorage.removeItem('fox_v10_mk');
-            localStorage.removeItem('fox_v10_bs');
-            localStorage.removeItem('fox_v10_rabbits');
-            localStorage.removeItem('fox_v10_darts');
-            localStorage.removeItem('fox_v10_quiz');
+            localStorage.removeItem('fox_v11_players');
+            localStorage.removeItem('fox_v11_fifa');
+            localStorage.removeItem('fox_v11_mk');
+            localStorage.removeItem('fox_v11_bs');
+            localStorage.removeItem('fox_v11_rabbits');
+            localStorage.removeItem('fox_v11_darts');
+            localStorage.removeItem('fox_v11_quiz');
             players = JSON.parse(JSON.stringify(defaultPlayers));
             fifaData = JSON.parse(JSON.stringify(defaultFifa));
             mkData = JSON.parse(JSON.stringify(defaultMK));
@@ -1506,7 +1506,7 @@
         const sortedPlayers = [...players].sort((a, b) => {
             const totalA = games.reduce((s, g) => s + (a.scores[g] || 0), 0);
             const totalB = games.reduce((s, g) => s + (b.scores[g] || 0), 0);
-            return totalB - totalA;
+            return totalB - totalB;
         });
 
         let message = "🏆 **Aktuální celkové pořadí FoX turnaje:**\n```";
