@@ -403,6 +403,13 @@
             color: #38bdf8;
         }
 
+        input.score-input.auto-calculated {
+            background-color: #162032;
+            color: #38bdf8;
+            border-color: transparent;
+            font-weight: bold;
+        }
+
         input.score-input:disabled {
             background-color: #162032;
             border-color: transparent;
@@ -485,7 +492,7 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- 1. ZÁLOŽKA: CELKOVÉ POŘADÍ                                -->
+    <!-- 1. ZÁLOŽKA: CELKOVÉ POŘADÍ (AUTOMATICKY POČÍTANÉ)         -->
     <!-- ========================================================= -->
     <div id="tab-overall" class="tab-content active">
         <div class="players-grid" id="playersGrid"></div>
@@ -493,6 +500,7 @@
         <div class="section-box">
             <div class="section-title">
                 <h2>📊 Celkový bodový přehled (6 disciplín)</h2>
+                <span class="badge">Body se automaticky propočítávají z turnajů</span>
             </div>
             <div class="table-wrapper">
                 <table>
@@ -708,7 +716,7 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- 6. ZÁLOŽKA: RABBIDS (3 POSTUP, 3 ROZSTŘEL, 1 FINÁLE)      -->
+    <!-- 6. ZÁLOŽKA: RABBIDS                                       -->
     <!-- ========================================================= -->
     <div id="tab-rabbits" class="tab-content">
         <div class="two-col-grid">
@@ -819,67 +827,48 @@
     const ADMIN_PIN = "1234";
     let isAdminUnlocked = false;
 
-    // 1. VÝCHOZÍ HRÁČI A CELKOVÉ BODY
     const defaultPlayers = [
-        { id: 'dany', name: 'DaNY', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'fullhouse', name: 'Fullhouse', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'spider', name: 'Spider', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'vjgodlike', name: 'VJgodlike', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'machy', name: 'Machy', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'rami', name: 'Rami', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'hayha', name: 'Hayha', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'slapy', name: 'Slapy', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'peta', name: 'Peta', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } }
+        { id: 'dany', name: 'DaNY', avatar: null },
+        { id: 'fullhouse', name: 'Fullhouse', avatar: null },
+        { id: 'spider', name: 'Spider', avatar: null },
+        { id: 'vjgodlike', name: 'VJgodlike', avatar: null },
+        { id: 'machy', name: 'Machy', avatar: null },
+        { id: 'rami', name: 'Rami', avatar: null },
+        { id: 'hayha', name: 'Hayha', avatar: null },
+        { id: 'slapy', name: 'Slapy', avatar: null },
+        { id: 'peta', name: 'Peta', avatar: null }
     ];
 
-    // 2. FIFA PAVOUK
     const defaultFifa = {
-        tb_prelim: [
-            { id: 'tb_p1', title: 'Předkolo TB (2 hráči)', badge: 'VÍTĚZ DO ČF 1 • PORAŽENÝ DO LB', p1: '', s1: 0, p2: '', s2: 0 }
-        ],
+        tb_prelim: [{ id: 'tb_p1', title: 'Předkolo TB (2 hráči)', badge: 'VÍTĚZ DO ČF 1 • PORAŽENÝ DO LB', p1: '', s1: 0, p2: '', s2: 0 }],
         tb_qf: [
-            { id: 'tb_qf1', title: 'Čtvrtfinále 1 (Wild Card vs Vítěz Předkola)', badge: '7x WILD CARD', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'tb_qf2', title: 'Čtvrtfinále 2 (Wild Card vs Wild Card)', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'tb_qf3', title: 'Čtvrtfinále 3 (Wild Card vs Wild Card)', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'tb_qf4', title: 'Čtvrtfinále 4 (Wild Card vs Wild Card)', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+            { id: 'tb_qf1', title: 'Čtvrtfinále 1', badge: '7x WILD CARD', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'tb_qf2', title: 'Čtvrtfinále 2', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'tb_qf3', title: 'Čtvrtfinále 3', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'tb_qf4', title: 'Čtvrtfinále 4', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
         ],
         tb_sf: [
-            { id: 'tb_sf1', title: 'Semifinále 1 (Vítěz ČF1 vs ČF2)', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'tb_sf2', title: 'Semifinále 2 (Vítěz ČF3 vs ČF4)', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+            { id: 'tb_sf1', title: 'Semifinále 1', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'tb_sf2', title: 'Semifinále 2', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
         ],
-        tb_final: [
-            { id: 'tb_f1', title: 'Finále Top Bracketu', badge: 'POSTUP DO GRAND FINÁLE', p1: '', s1: 0, p2: '', s2: 0 }
-        ],
-        lb_prelim: [
-            { id: 'lb_p1', title: 'Předkolo LB (Poražený z Předkola TB vs Poražený ČF1)', badge: '2. ŠANCE', p1: '', s1: 0, p2: '', s2: 0 }
-        ],
+        tb_final: [{ id: 'tb_f1', title: 'Finále Top Bracketu', badge: 'DO GRAND FINÁLE', p1: '', s1: 0, p2: '', s2: 0 }],
+        lb_prelim: [{ id: 'lb_p1', title: 'Předkolo LB', badge: '2. ŠANCE', p1: '', s1: 0, p2: '', s2: 0 }],
         lb_r1: [
-            { id: 'lb_r1_1', title: '1. kolo oprav A (Vítěz Předkola LB vs Poražený ČF2)', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'lb_r1_2', title: '1. kolo oprav B (Poražený ČF3 vs Poražený ČF4)', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+            { id: 'lb_r1_1', title: '1. kolo oprav A', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'lb_r1_2', title: '1. kolo oprav B', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
         ],
         lb_r2: [
-            { id: 'lb_r2_1', title: '2. kolo oprav A (Vítěz LB 1A vs Poražený SF2)', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'lb_r2_2', title: '2. kolo oprav B (Vítěz LB 1B vs Poražený SF1)', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+            { id: 'lb_r2_1', title: '2. kolo oprav A', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'lb_r2_2', title: '2. kolo oprav B', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
         ],
-        lb_sf: [
-            { id: 'lb_sf1', title: 'Semifinále Low Bracketu', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
-        ],
-        lb_final: [
-            { id: 'lb_f1', title: 'Finále Low Bracketu (Vítěz LB SF vs Poražený TB Finále)', badge: 'DO GRAND FINÁLE', p1: '', s1: 0, p2: '', s2: 0 }
-        ],
-        grand_final: [
-            { id: 'gf_1', title: 'GRAND FINÁLE FIFA (Vítěz TB vs Vítěz LB)', badge: 'ŠAMPION FIFA', p1: '', s1: 0, p2: '', s2: 0 }
-        ]
+        lb_sf: [{ id: 'lb_sf1', title: 'Semifinále Low Bracketu', badge: '', p1: '', s1: 0, p2: '', s2: 0 }],
+        lb_final: [{ id: 'lb_f1', title: 'Finále Low Bracketu', badge: 'DO GRAND FINÁLE', p1: '', s1: 0, p2: '', s2: 0 }],
+        grand_final: [{ id: 'gf_1', title: 'GRAND FINÁLE FIFA', badge: 'ŠAMPION FIFA', p1: '', s1: 0, p2: '', s2: 0 }]
     };
 
-    // 3. MORTAL KOMBAT DATA
     const defaultMK = {
-        groupA: [
-            { player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }
-        ],
-        groupB: [
-            { player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }
-        ],
+        groupA: [{ player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }],
+        groupB: [{ player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }],
         playoff_qf: [
             { id: 'mk_qf1', title: 'Čtvrtfinále 1 (A2 vs B3)', badge: '1. ze skupin mají volno', p1: '', s1: 0, p2: '', s2: 0 },
             { id: 'mk_qf2', title: 'Čtvrtfinále 2 (B2 vs A3)', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
@@ -888,16 +877,12 @@
             { id: 'mk_sf1', title: 'Semifinále 1 (A1 vs vítěz ČF)', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
             { id: 'mk_sf2', title: 'Semifinále 2 (B1 vs vítěz ČF)', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
         ],
-        playoff_final: [
-            { id: 'mk_f1', title: 'FINÁLE MORTAL KOMBAT', badge: 'VÍTĚZ MK', p1: '', s1: 0, p2: '', s2: 0 }
-        ]
+        playoff_final: [{ id: 'mk_f1', title: 'FINÁLE MORTAL KOMBAT', badge: 'VÍTĚZ MK', p1: '', s1: 0, p2: '', s2: 0 }]
     };
 
-    // 4. BEAT SABER DATA
     const defaultBeatSaber = {};
     defaultPlayers.forEach(p => { defaultBeatSaber[p.id] = { try1: 0, try2: 0 }; });
 
-    // 5. RABBIDS DATA (3 přímý postup, 3 rozstřel o 4. místo, finále pro 4)
     const defaultRabbits = {
         rounds: [
             {
@@ -917,20 +902,10 @@
                 ]
             }
         ],
-        playoff3: [
-            { p: '', pts: 0 },
-            { p: '', pts: 0 },
-            { p: '', pts: 0 }
-        ],
-        final4: [
-            { p: '', pts: 0 },
-            { p: '', pts: 0 },
-            { p: '', pts: 0 },
-            { p: '', pts: 0 }
-        ]
+        playoff3: [{ p: '', pts: 0 }, { p: '', pts: 0 }, { p: '', pts: 0 }],
+        final4: [{ p: '', pts: 0 }, { p: '', pts: 0 }, { p: '', pts: 0 }, { p: '', pts: 0 }]
     };
 
-    // 6. ŠIPKY & KVÍZ DATA
     const defaultDarts = {};
     const defaultQuiz = {};
     defaultPlayers.forEach(p => {
@@ -938,25 +913,97 @@
         defaultQuiz[p.id] = 0;
     });
 
-    // NAČTENÍ Z LOCALSTORAGE (v6)
-    let players = JSON.parse(localStorage.getItem('fox_v6_players')) || JSON.parse(JSON.stringify(defaultPlayers));
-    let fifaData = JSON.parse(localStorage.getItem('fox_v6_fifa')) || JSON.parse(JSON.stringify(defaultFifa));
-    let mkData = JSON.parse(localStorage.getItem('fox_v6_mk')) || JSON.parse(JSON.stringify(defaultMK));
-    let bsData = JSON.parse(localStorage.getItem('fox_v6_bs')) || JSON.parse(JSON.stringify(defaultBeatSaber));
-    let rabbitsData = JSON.parse(localStorage.getItem('fox_v6_rabbits')) || JSON.parse(JSON.stringify(defaultRabbits));
-    let dartsData = JSON.parse(localStorage.getItem('fox_v6_darts')) || JSON.parse(JSON.stringify(defaultDarts));
-    let quizData = JSON.parse(localStorage.getItem('fox_v6_quiz')) || JSON.parse(JSON.stringify(defaultQuiz));
+    // NAČTENÍ Z LOCALSTORAGE (v7)
+    let players = JSON.parse(localStorage.getItem('fox_v7_players')) || JSON.parse(JSON.stringify(defaultPlayers));
+    let fifaData = JSON.parse(localStorage.getItem('fox_v7_fifa')) || JSON.parse(JSON.stringify(defaultFifa));
+    let mkData = JSON.parse(localStorage.getItem('fox_v7_mk')) || JSON.parse(JSON.stringify(defaultMK));
+    let bsData = JSON.parse(localStorage.getItem('fox_v7_bs')) || JSON.parse(JSON.stringify(defaultBeatSaber));
+    let rabbitsData = JSON.parse(localStorage.getItem('fox_v7_rabbits')) || JSON.parse(JSON.stringify(defaultRabbits));
+    let dartsData = JSON.parse(localStorage.getItem('fox_v7_darts')) || JSON.parse(JSON.stringify(defaultDarts));
+    let quizData = JSON.parse(localStorage.getItem('fox_v7_quiz')) || JSON.parse(JSON.stringify(defaultQuiz));
 
     const games = ['sipky', 'mk', 'fifa', 'rabbits', 'beatsaber', 'kviz'];
 
     function saveAll() {
-        localStorage.setItem('fox_v6_players', JSON.stringify(players));
-        localStorage.setItem('fox_v6_fifa', JSON.stringify(fifaData));
-        localStorage.setItem('fox_v6_mk', JSON.stringify(mkData));
-        localStorage.setItem('fox_v6_bs', JSON.stringify(bsData));
-        localStorage.setItem('fox_v6_rabbits', JSON.stringify(rabbitsData));
-        localStorage.setItem('fox_v6_darts', JSON.stringify(dartsData));
-        localStorage.setItem('fox_v6_quiz', JSON.stringify(quizData));
+        localStorage.setItem('fox_v7_players', JSON.stringify(players));
+        localStorage.setItem('fox_v7_fifa', JSON.stringify(fifaData));
+        localStorage.setItem('fox_v7_mk', JSON.stringify(mkData));
+        localStorage.setItem('fox_v7_bs', JSON.stringify(bsData));
+        localStorage.setItem('fox_v7_rabbits', JSON.stringify(rabbitsData));
+        localStorage.setItem('fox_v7_darts', JSON.stringify(dartsData));
+        localStorage.setItem('fox_v7_quiz', JSON.stringify(quizData));
+    }
+
+    // AUTOMATICKÝ VÝPOČET UMÍSTĚNÍ A BODŮ (10, 8, 6, 5, 4, 3, 2, 1, 0)
+    function calculatePointsFromStandings(standingsList) {
+        const pointsMap = {};
+        players.forEach(p => { pointsMap[p.name] = 0; });
+        
+        const ptsDistribution = [10, 8, 6, 5, 4, 3, 2, 1, 0];
+        standingsList.forEach((name, index) => {
+            if (name && pointsMap.hasOwnProperty(name)) {
+                pointsMap[name] = ptsDistribution[index] !== undefined ? ptsDistribution[index] : 0;
+            }
+        });
+        return pointsMap;
+    }
+
+    // ODVOZENÍ POŘADÍ PRO JEDNOTLIVÉ HRY
+    function getGameStandings(gameKey) {
+        const names = players.map(p => p.name);
+
+        if (gameKey === 'darts') {
+            const list = players.map(p => ({ name: p.name, score: dartsData[p.id] || 0 }));
+            list.sort((a, b) => b.score - a.score);
+            return list.map(x => x.name);
+        }
+
+        if (gameKey === 'kviz') {
+            const list = players.map(p => ({ name: p.name, score: quizData[p.id] || 0 }));
+            list.sort((a, b) => b.score - a.score);
+            return list.map(x => x.name);
+        }
+
+        if (gameKey === 'beatsaber') {
+            const list = players.map(p => {
+                const t = bsData[p.id] || { try1: 0, try2: 0 };
+                return { name: p.name, best: Math.max(t.try1 || 0, t.try2 || 0) };
+            });
+            list.sort((a, b) => b.best - a.best);
+            return list.map(x => x.name);
+        }
+
+        if (gameKey === 'fifa') {
+            // Určení pořadí z FIFA pavouka (Grand Finále, LB Finále atd.)
+            const gf = fifaData.grand_final[0];
+            let winner = gf.s1 > gf.s2 ? gf.p1 : (gf.s2 > gf.s1 ? gf.p2 : '');
+            let loser = gf.s1 > gf.s2 ? gf.p2 : (gf.s2 > gf.s1 ? gf.p1 : '');
+            
+            let ranked = [winner, loser].filter(Boolean);
+            // Přidáme ostatní hráče podle abecedy jako fallback, dokud nejsou vyplněni
+            names.forEach(n => { if (!ranked.includes(n)) ranked.push(n); });
+            return ranked;
+        }
+
+        if (gameKey === 'mk') {
+            const f = mkData.playoff_final[0];
+            let winner = f.s1 > f.s2 ? f.p1 : (f.s2 > f.s1 ? f.p2 : '');
+            let loser = f.s1 > f.s2 ? f.p2 : (f.s2 > f.s1 ? f.p1 : '');
+            let ranked = [winner, loser].filter(Boolean);
+            names.forEach(n => { if (!ranked.includes(n)) ranked.push(n); });
+            return ranked;
+        }
+
+        if (gameKey === 'rabbits') {
+            const f = rabbitsData.final4;
+            // Seřadíme finálovou 4 podle bodů ve finále
+            let sortedFinal = [...f].sort((a, b) => (b.pts || 0) - (a.pts || 0));
+            let ranked = sortedFinal.map(x => x.p).filter(Boolean);
+            names.forEach(n => { if (!ranked.includes(n)) ranked.push(n); });
+            return ranked;
+        }
+
+        return names;
     }
 
     window.switchTab = function(tabId, btnElement) {
@@ -975,18 +1022,36 @@
         return opts;
     }
 
-    function getTotalScore(player) {
-        return games.reduce((sum, game) => sum + (player.scores[game] || 0), 0);
-    }
-
-    // 1. CELKOVÉ POŘADÍ
+    // 1. CELKOVÉ POŘADÍ (AUTOMATICKY PROPISUJE BODY Z HRÁCÍCH ZÁLOŽEK)
     function renderOverall() {
-        const sortedPlayers = [...players].sort((a, b) => getTotalScore(b) - getTotalScore(a));
+        // Automatický výpočet bodů ze všech 6 disciplín
+        const dartsPoints = calculatePointsFromStandings(getGameStandings('darts'));
+        const quizPoints = calculatePointsFromStandings(getGameStandings('kviz'));
+        const bsPoints = calculatePointsFromStandings(getGameStandings('beatsaber'));
+        const fifaPoints = calculatePointsFromStandings(getGameStandings('fifa'));
+        const mkPoints = calculatePointsFromStandings(getGameStandings('mk'));
+        const rabbitsPoints = calculatePointsFromStandings(getGameStandings('rabbits'));
+
+        players.forEach(p => {
+            p.scores.sipky = dartsPoints[p.name] || 0;
+            p.scores.kviz = quizPoints[p.name] || 0;
+            p.scores.beatsaber = bsPoints[p.name] || 0;
+            p.scores.fifa = fifaPoints[p.name] || 0;
+            p.scores.mk = mkPoints[p.name] || 0;
+            p.scores.rabbits = rabbitsPoints[p.name] || 0;
+        });
+
+        const sortedPlayers = [...players].sort((a, b) => {
+            const totalA = games.reduce((s, g) => s + a.scores[g], 0);
+            const totalB = games.reduce((s, g) => s + b.scores[g], 0);
+            return totalB - totalA;
+        });
+
         const grid = document.getElementById('playersGrid');
         grid.innerHTML = '';
 
         sortedPlayers.forEach((player, index) => {
-            const total = getTotalScore(player);
+            const total = games.reduce((s, g) => s + player.scores[g], 0);
             const card = document.createElement('div');
             card.className = `player-card rank-${index + 1}`;
             const avatarHtml = player.avatar 
@@ -1004,33 +1069,23 @@
 
         const tbody = document.getElementById('scoresTableBody');
         tbody.innerHTML = '';
-        const disabledAttr = isAdminUnlocked ? '' : 'disabled';
 
         players.forEach(player => {
+            const total = games.reduce((s, g) => s + player.scores[g], 0);
             const tr = document.createElement('tr');
-            let rowHtml = `<td><b>${player.name}</b></td>`;
-            games.forEach(game => {
-                rowHtml += `
-                    <td>
-                        <input type="number" class="score-input" value="${player.scores[game]}" ${disabledAttr}
-                            onchange="updateOverallScore('${player.id}', '${game}', this.value)">
-                    </td>`;
-            });
-            rowHtml += `<td class="total-cell" id="total-${player.id}">${getTotalScore(player)}</td>`;
-            tr.innerHTML = rowHtml;
+            tr.innerHTML = `
+                <td><b>${player.name}</b></td>
+                <td><input type="number" class="score-input auto-calculated" value="${player.scores.sipky}" disabled></td>
+                <td><input type="number" class="score-input auto-calculated" value="${player.scores.mk}" disabled></td>
+                <td><input type="number" class="score-input auto-calculated" value="${player.scores.fifa}" disabled></td>
+                <td><input type="number" class="score-input auto-calculated" value="${player.scores.rabbits}" disabled></td>
+                <td><input type="number" class="score-input auto-calculated" value="${player.scores.beatsaber}" disabled></td>
+                <td><input type="number" class="score-input auto-calculated" value="${player.scores.kviz}" disabled></td>
+                <td class="total-cell">${total}</td>
+            `;
             tbody.appendChild(tr);
         });
     }
-
-    window.updateOverallScore = function(playerId, game, val) {
-        if (!isAdminUnlocked) return;
-        const p = players.find(x => x.id === playerId);
-        if (p) {
-            p.scores[game] = parseInt(val) || 0;
-            saveAll();
-            renderOverall();
-        }
-    };
 
     // 2. FIFA BRACKET
     function createMatchBox(dataObjName, sectionKey, idx, match) {
@@ -1067,6 +1122,7 @@
             targetObj[sectionKey][idx][field] = val;
         }
         saveAll();
+        renderOverall();
     };
 
     function renderFifa() {
@@ -1137,6 +1193,7 @@
         }
         saveAll();
         renderMK();
+        renderOverall();
     };
 
     // 4. BEAT SABER
@@ -1181,9 +1238,10 @@
         bsData[playerId][tryKey] = num;
         saveAll();
         renderBeatSaber();
+        renderOverall();
     };
 
-    // 5. RABBIDS (3 přímý postup, 3 rozstřel o 4. místo, finále 4)
+    // 5. RABBIDS
     function renderRabbits() {
         const disabledAttr = isAdminUnlocked ? '' : 'disabled';
         const roundsContainer = document.getElementById('rabbitsRoundsContainer');
@@ -1228,8 +1286,8 @@
         const lbBody = document.getElementById('rabbitsLeaderboardBody');
         lbBody.innerHTML = '';
         summary.forEach((row, idx) => {
-            const isTop3 = idx < 3; // První 3 přímo
-            const isPlayoff = idx >= 3 && idx < 6; // 4.-6. místo do rozstřelu
+            const isTop3 = idx < 3;
+            const isPlayoff = idx >= 3 && idx < 6;
             
             const tr = document.createElement('tr');
             if (isTop3 && row.total > 0) tr.className = 'advancing-row';
@@ -1250,7 +1308,6 @@
             lbBody.appendChild(tr);
         });
 
-        // Rozstřel o 4. místo (3 hráči)
         const playoffContainer = document.getElementById('rabbitsPlayoffContainer');
         let playoffSlotsHtml = '';
         rabbitsData.playoff3.forEach((slot, pIdx) => {
@@ -1271,7 +1328,6 @@
             </div>
         `;
 
-        // Velké Finále (4 hráči)
         const finalContainer = document.getElementById('rabbitsFinalContainer');
         let finalSlotsHtml = '';
         rabbitsData.final4.forEach((slot, fIdx) => {
@@ -1302,6 +1358,7 @@
         }
         saveAll();
         renderRabbits();
+        renderOverall();
     };
 
     window.updateRabbitsPlayoff = function(pIdx, field, val) {
@@ -1322,6 +1379,7 @@
             rabbitsData.final4[fIdx].p = val;
         }
         saveAll();
+        renderOverall();
     };
 
     // 6. ŠIPKY
@@ -1352,6 +1410,7 @@
         dartsData[playerId] = parseInt(val) || 0;
         saveAll();
         renderDarts();
+        renderOverall();
     };
 
     // 7. KVÍZ
@@ -1382,6 +1441,7 @@
         quizData[playerId] = parseInt(val) || 0;
         saveAll();
         renderQuiz();
+        renderOverall();
     };
 
     // ADMIN PIN, RESET A DISCORD
@@ -1419,13 +1479,13 @@
     window.resetAllData = function() {
         if (!isAdminUnlocked) return;
         if (confirm("Opravdu chcete vymazat všechna data ze všech turnajů?")) {
-            localStorage.removeItem('fox_v6_players');
-            localStorage.removeItem('fox_v6_fifa');
-            localStorage.removeItem('fox_v6_mk');
-            localStorage.removeItem('fox_v6_bs');
-            localStorage.removeItem('fox_v6_rabbits');
-            localStorage.removeItem('fox_v6_darts');
-            localStorage.removeItem('fox_v6_quiz');
+            localStorage.removeItem('fox_v7_players');
+            localStorage.removeItem('fox_v7_fifa');
+            localStorage.removeItem('fox_v7_mk');
+            localStorage.removeItem('fox_v7_bs');
+            localStorage.removeItem('fox_v7_rabbits');
+            localStorage.removeItem('fox_v7_darts');
+            localStorage.removeItem('fox_v7_quiz');
             players = JSON.parse(JSON.stringify(defaultPlayers));
             fifaData = JSON.parse(JSON.stringify(defaultFifa));
             mkData = JSON.parse(JSON.stringify(defaultMK));
@@ -1438,10 +1498,16 @@
     };
 
     window.sendToDiscord = function() {
-        const sortedPlayers = [...players].sort((a, b) => getTotalScore(b) - getTotalScore(a));
+        const sortedPlayers = [...players].sort((a, b) => {
+            const totalA = games.reduce((s, g) => s + a.scores[g], 0);
+            const totalB = games.reduce((s, g) => s + b.scores[g], 0);
+            return totalB - totalA;
+        });
+
         let message = "🏆 **Aktuální celkové pořadí FoX turnaje:**\n```";
         sortedPlayers.forEach((p, i) => {
-            message += `\n${i + 1}. ${p.name.padEnd(10, ' ')} - ${getTotalScore(p)} bodů`;
+            const total = games.reduce((s, g) => s + p.scores[g], 0);
+            message += `\n${i + 1}. ${p.name.padEnd(10, ' ')} - ${total} bodů`;
         });
         message += "\n```";
 
