@@ -828,15 +828,15 @@
     let isAdminUnlocked = false;
 
     const defaultPlayers = [
-        { id: 'dany', name: 'DaNY', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'fullhouse', name: 'Fullhouse', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'spider', name: 'Spider', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'vjgodlike', name: 'VJgodlike', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'machy', name: 'Machy', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'rami', name: 'Rami', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'hayha', name: 'Hayha', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'slapy', name: 'Slapy', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'peta', name: 'Peta', avatar: null, scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } }
+        { id: 'dany', name: 'DaNY', avatar: 'KILD.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'fullhouse', name: 'Fullhouse', avatar: 'Fullhouse.jpg', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'spider', name: 'Spider', avatar: 'Spider.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'vjgodlike', name: 'VJgodlike', avatar: 'VJgodlike.jpg', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'machy', name: 'Machy', avatar: 'Machy.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'rami', name: 'Rami', avatar: 'Rami.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'hayha', name: 'Hayha', avatar: 'Hayha.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'slapy', name: 'Slapy', avatar: 'Deacon.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'peta', name: 'Peta', avatar: 'Peta.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } }
     ];
 
     const defaultFifa = {
@@ -913,32 +913,30 @@
         defaultQuiz[p.id] = 0;
     });
 
-    // NAČTENÍ Z LOCALSTORAGE (v8)
-    let players = JSON.parse(localStorage.getItem('fox_v8_players')) || JSON.parse(JSON.stringify(defaultPlayers));
-    let fifaData = JSON.parse(localStorage.getItem('fox_v8_fifa')) || JSON.parse(JSON.stringify(defaultFifa));
-    let mkData = JSON.parse(localStorage.getItem('fox_v8_mk')) || JSON.parse(JSON.stringify(defaultMK));
-    let bsData = JSON.parse(localStorage.getItem('fox_v8_bs')) || JSON.parse(JSON.stringify(defaultBeatSaber));
-    let rabbitsData = JSON.parse(localStorage.getItem('fox_v8_rabbits')) || JSON.parse(JSON.stringify(defaultRabbits));
-    let dartsData = JSON.parse(localStorage.getItem('fox_v8_darts')) || JSON.parse(JSON.stringify(defaultDarts));
-    let quizData = JSON.parse(localStorage.getItem('fox_v8_quiz')) || JSON.parse(JSON.stringify(defaultQuiz));
+    // NAČTENÍ Z LOCALSTORAGE (v10)
+    let players = JSON.parse(localStorage.getItem('fox_v10_players')) || JSON.parse(JSON.stringify(defaultPlayers));
+    let fifaData = JSON.parse(localStorage.getItem('fox_v10_fifa')) || JSON.parse(JSON.stringify(defaultFifa));
+    let mkData = JSON.parse(localStorage.getItem('fox_v10_mk')) || JSON.parse(JSON.stringify(defaultMK));
+    let bsData = JSON.parse(localStorage.getItem('fox_v10_bs')) || JSON.parse(JSON.stringify(defaultBeatSaber));
+    let rabbitsData = JSON.parse(localStorage.getItem('fox_v10_rabbits')) || JSON.parse(JSON.stringify(defaultRabbits));
+    let dartsData = JSON.parse(localStorage.getItem('fox_v10_darts')) || JSON.parse(JSON.stringify(defaultDarts));
+    let quizData = JSON.parse(localStorage.getItem('fox_v10_quiz')) || JSON.parse(JSON.stringify(defaultQuiz));
 
     const games = ['sipky', 'mk', 'fifa', 'rabbits', 'beatsaber', 'kviz'];
 
     function saveAll() {
-        localStorage.setItem('fox_v8_players', JSON.stringify(players));
-        localStorage.setItem('fox_v8_fifa', JSON.stringify(fifaData));
-        localStorage.setItem('fox_v8_mk', JSON.stringify(mkData));
-        localStorage.setItem('fox_v8_bs', JSON.stringify(bsData));
-        localStorage.setItem('fox_v8_rabbits', JSON.stringify(rabbitsData));
-        localStorage.setItem('fox_v8_darts', JSON.stringify(dartsData));
-        localStorage.setItem('fox_v8_quiz', JSON.stringify(quizData));
+        localStorage.setItem('fox_v10_players', JSON.stringify(players));
+        localStorage.setItem('fox_v10_fifa', JSON.stringify(fifaData));
+        localStorage.setItem('fox_v10_mk', JSON.stringify(mkData));
+        localStorage.setItem('fox_v10_bs', JSON.stringify(bsData));
+        localStorage.setItem('fox_v10_rabbits', JSON.stringify(rabbitsData));
+        localStorage.setItem('fox_v10_darts', JSON.stringify(dartsData));
+        localStorage.setItem('fox_v10_quiz', JSON.stringify(quizData));
     }
 
-    // AUTOMATICKÝ VÝPOČET UMÍSTĚNÍ A BODŮ (10, 8, 6, 5, 4, 3, 2, 1, 0)
     function calculatePointsFromStandings(standingsList) {
         const pointsMap = {};
         players.forEach(p => { pointsMap[p.name] = 0; });
-        
         const ptsDistribution = [10, 8, 6, 5, 4, 3, 2, 1, 0];
         standingsList.forEach((name, index) => {
             if (name && pointsMap.hasOwnProperty(name)) {
@@ -948,29 +946,20 @@
         return pointsMap;
     }
 
-    // ODVOZENÍ POŘADÍ PRO JEDNOTLIVÉ HRY
     function getGameStandings(gameKey) {
         const names = players.map(p => p.name);
 
         if (gameKey === 'darts') {
-            const hasScores = Object.values(dartsData).some(v => v > 0);
-            if (!hasScores) return [];
             const list = players.map(p => ({ name: p.name, score: dartsData[p.id] || 0 }));
             list.sort((a, b) => b.score - a.score);
             return list.map(x => x.name);
         }
-
         if (gameKey === 'kviz') {
-            const hasScores = Object.values(quizData).some(v => v > 0);
-            if (!hasScores) return [];
             const list = players.map(p => ({ name: p.name, score: quizData[p.id] || 0 }));
             list.sort((a, b) => b.score - a.score);
             return list.map(x => x.name);
         }
-
         if (gameKey === 'beatsaber') {
-            const hasScores = Object.values(bsData).some(t => (t.try1 || 0) > 0 || (t.try2 || 0) > 0);
-            if (!hasScores) return [];
             const list = players.map(p => {
                 const t = bsData[p.id] || { try1: 0, try2: 0 };
                 return { name: p.name, best: Math.max(t.try1 || 0, t.try2 || 0) };
@@ -978,39 +967,30 @@
             list.sort((a, b) => b.best - a.best);
             return list.map(x => x.name);
         }
-
         if (gameKey === 'fifa') {
             const gf = fifaData.grand_final[0];
-            if (!gf.p1 || !gf.p2 || (gf.s1 === 0 && gf.s2 === 0)) return [];
             let winner = gf.s1 > gf.s2 ? gf.p1 : (gf.s2 > gf.s1 ? gf.p2 : '');
             let loser = gf.s1 > gf.s2 ? gf.p2 : (gf.s2 > gf.s1 ? gf.p1 : '');
-            
             let ranked = [winner, loser].filter(Boolean);
             names.forEach(n => { if (!ranked.includes(n)) ranked.push(n); });
             return ranked;
         }
-
         if (gameKey === 'mk') {
             const f = mkData.playoff_final[0];
-            if (!f.p1 || !f.p2 || (f.s1 === 0 && f.s2 === 0)) return [];
             let winner = f.s1 > f.s2 ? f.p1 : (f.s2 > f.s1 ? f.p2 : '');
             let loser = f.s1 > f.s2 ? f.p2 : (f.s2 > f.s1 ? f.p1 : '');
             let ranked = [winner, loser].filter(Boolean);
             names.forEach(n => { if (!ranked.includes(n)) ranked.push(n); });
             return ranked;
         }
-
         if (gameKey === 'rabbits') {
             const f = rabbitsData.final4;
-            const hasFinal = f.some(x => x.p && x.pts > 0);
-            if (!hasFinal) return [];
             let sortedFinal = [...f].sort((a, b) => (b.pts || 0) - (a.pts || 0));
             let ranked = sortedFinal.map(x => x.p).filter(Boolean);
             names.forEach(n => { if (!ranked.includes(n)) ranked.push(n); });
             return ranked;
         }
-
-        return [];
+        return names;
     }
 
     window.switchTab = function(tabId, btnElement) {
@@ -1029,7 +1009,6 @@
         return opts;
     }
 
-    // 1. CELKOVÉ POŘADÍ (AUTOMATICKY PROPISUJE BODY Z HRÁCÍCH ZÁLOŽEK)
     function renderOverall() {
         const dartsPoints = calculatePointsFromStandings(getGameStandings('darts'));
         const quizPoints = calculatePointsFromStandings(getGameStandings('kviz'));
@@ -1055,46 +1034,47 @@
         });
 
         const grid = document.getElementById('playersGrid');
-        grid.innerHTML = '';
+        if (grid) {
+            grid.innerHTML = '';
+            sortedPlayers.forEach((player, index) => {
+                const total = games.reduce((s, g) => s + (player.scores[g] || 0), 0);
+                const card = document.createElement('div');
+                card.className = `player-card rank-${index + 1}`;
+                const avatarHtml = player.avatar 
+                    ? `<img src="${player.avatar}" alt="${player.name}" class="avatar">`
+                    : `<div class="avatar">${player.name.charAt(0).toUpperCase()}</div>`;
 
-        sortedPlayers.forEach((player, index) => {
-            const total = games.reduce((s, g) => s + (player.scores[g] || 0), 0);
-            const card = document.createElement('div');
-            card.className = `player-card rank-${index + 1}`;
-            const avatarHtml = player.avatar 
-                ? `<img src="${player.avatar}" alt="${player.name}" class="avatar">`
-                : `<div class="avatar">${player.name.charAt(0).toUpperCase()}</div>`;
-
-            card.innerHTML = `
-                <div class="rank-badge">${index + 1}</div>
-                ${avatarHtml}
-                <div class="player-name">${player.name}</div>
-                <div class="player-score">${total} b</div>
-            `;
-            grid.appendChild(card);
-        });
+                card.innerHTML = `
+                    <div class="rank-badge">${index + 1}</div>
+                    ${avatarHtml}
+                    <div class="player-name">${player.name}</div>
+                    <div class="player-score">${total} b</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
 
         const tbody = document.getElementById('scoresTableBody');
-        tbody.innerHTML = '';
-
-        players.forEach(player => {
-            const total = games.reduce((s, g) => s + (player.scores[g] || 0), 0);
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><b>${player.name}</b></td>
-                <td><input type="number" class="score-input auto-calculated" value="${player.scores.sipky}" disabled></td>
-                <td><input type="number" class="score-input auto-calculated" value="${player.scores.mk}" disabled></td>
-                <td><input type="number" class="score-input auto-calculated" value="${player.scores.fifa}" disabled></td>
-                <td><input type="number" class="score-input auto-calculated" value="${player.scores.rabbits}" disabled></td>
-                <td><input type="number" class="score-input auto-calculated" value="${player.scores.beatsaber}" disabled></td>
-                <td><input type="number" class="score-input auto-calculated" value="${player.scores.kviz}" disabled></td>
-                <td class="total-cell">${total}</td>
-            `;
-            tbody.appendChild(tr);
-        });
+        if (tbody) {
+            tbody.innerHTML = '';
+            players.forEach(player => {
+                const total = games.reduce((s, g) => s + (player.scores[g] || 0), 0);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><b>${player.name}</b></td>
+                    <td><input type="number" class="score-input auto-calculated" value="${player.scores.sipky}" disabled></td>
+                    <td><input type="number" class="score-input auto-calculated" value="${player.scores.mk}" disabled></td>
+                    <td><input type="number" class="score-input auto-calculated" value="${player.scores.fifa}" disabled></td>
+                    <td><input type="number" class="score-input auto-calculated" value="${player.scores.rabbits}" disabled></td>
+                    <td><input type="number" class="score-input auto-calculated" value="${player.scores.beatsaber}" disabled></td>
+                    <td><input type="number" class="score-input auto-calculated" value="${player.scores.kviz}" disabled></td>
+                    <td class="total-cell">${total}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
     }
 
-    // 2. FIFA BRACKET
     function createMatchBox(dataObjName, sectionKey, idx, match) {
         const disabledAttr = isAdminUnlocked ? '' : 'disabled';
         const badgeHtml = match.badge ? `<span class="badge">${match.badge}</span>` : '';
@@ -1133,28 +1113,38 @@
     };
 
     function renderFifa() {
-        document.getElementById('topBracketContainer').innerHTML = `
-            <div class="round-column"><div class="round-header">Předkolo TB (2 hráči)</div>${fifaData.tb_prelim.map((m, i) => createMatchBox('fifa', 'tb_prelim', i, m)).join('')}</div>
-            <div class="round-column"><div class="round-header">Čtvrtfinále (Top 8)</div>${fifaData.tb_qf.map((m, i) => createMatchBox('fifa', 'tb_qf', i, m)).join('')}</div>
-            <div class="round-column"><div class="round-header">Semifinále TB</div>${fifaData.tb_sf.map((m, i) => createMatchBox('fifa', 'tb_sf', i, m)).join('')}</div>
-            <div class="round-column"><div class="round-header">Finále TB</div>${fifaData.tb_final.map((m, i) => createMatchBox('fifa', 'tb_final', i, m)).join('')}</div>
-        `;
-        document.getElementById('lowBracketContainer').innerHTML = `
-            <div class="round-column"><div class="round-header">Předkolo LB (Oprava)</div>${fifaData.lb_prelim.map((m, i) => createMatchBox('fifa', 'lb_prelim', i, m)).join('')}</div>
-            <div class="round-column"><div class="round-header">1. kolo oprav</div>${fifaData.lb_r1.map((m, i) => createMatchBox('fifa', 'lb_r1', i, m)).join('')}</div>
-            <div class="round-column"><div class="round-header">2. kolo oprav</div>${fifaData.lb_r2.map((m, i) => createMatchBox('fifa', 'lb_r2', i, m)).join('')}</div>
-            <div class="round-column"><div class="round-header">Semifinále LB</div>${fifaData.lb_sf.map((m, i) => createMatchBox('fifa', 'lb_sf', i, m)).join('')}</div>
-            <div class="round-column"><div class="round-header">Finále LB</div>${fifaData.lb_final.map((m, i) => createMatchBox('fifa', 'lb_final', i, m)).join('')}</div>
-        `;
-        document.getElementById('grandFinalContainer').innerHTML = fifaData.grand_final.map((m, i) => createMatchBox('fifa', 'grand_final', i, m)).join('');
+        const topCont = document.getElementById('topBracketContainer');
+        const lowCont = document.getElementById('lowBracketContainer');
+        const gfCont = document.getElementById('grandFinalContainer');
+
+        if (topCont) {
+            topCont.innerHTML = `
+                <div class="round-column"><div class="round-header">Předkolo TB (2 hráči)</div>${fifaData.tb_prelim.map((m, i) => createMatchBox('fifa', 'tb_prelim', i, m)).join('')}</div>
+                <div class="round-column"><div class="round-header">Čtvrtfinále (Top 8)</div>${fifaData.tb_qf.map((m, i) => createMatchBox('fifa', 'tb_qf', i, m)).join('')}</div>
+                <div class="round-column"><div class="round-header">Semifinále TB</div>${fifaData.tb_sf.map((m, i) => createMatchBox('fifa', 'tb_sf', i, m)).join('')}</div>
+                <div class="round-column"><div class="round-header">Finále TB</div>${fifaData.tb_final.map((m, i) => createMatchBox('fifa', 'tb_final', i, m)).join('')}</div>
+            `;
+        }
+        if (lowCont) {
+            lowCont.innerHTML = `
+                <div class="round-column"><div class="round-header">Předkolo LB (Oprava)</div>${fifaData.lb_prelim.map((m, i) => createMatchBox('fifa', 'lb_prelim', i, m)).join('')}</div>
+                <div class="round-column"><div class="round-header">1. kolo oprav</div>${fifaData.lb_r1.map((m, i) => createMatchBox('fifa', 'lb_r1', i, m)).join('')}</div>
+                <div class="round-column"><div class="round-header">2. kolo oprav</div>${fifaData.lb_r2.map((m, i) => createMatchBox('fifa', 'lb_r2', i, m)).join('')}</div>
+                <div class="round-column"><div class="round-header">Semifinále LB</div>${fifaData.lb_sf.map((m, i) => createMatchBox('fifa', 'lb_sf', i, m)).join('')}</div>
+                <div class="round-column"><div class="round-header">Finále LB</div>${fifaData.lb_final.map((m, i) => createMatchBox('fifa', 'lb_final', i, m)).join('')}</div>
+            `;
+        }
+        if (gfCont) {
+            gfCont.innerHTML = fifaData.grand_final.map((m, i) => createMatchBox('fifa', 'grand_final', i, m)).join('');
+        }
     }
 
-    // 3. MORTAL KOMBAT
     function renderMK() {
         const disabledAttr = isAdminUnlocked ? '' : 'disabled';
 
         const renderGroup = (groupKey, bodyId) => {
             const tbody = document.getElementById(bodyId);
+            if (!tbody) return;
             tbody.innerHTML = '';
 
             const indexed = mkData[groupKey].map((item, origIdx) => ({ ...item, origIdx }));
@@ -1184,11 +1174,14 @@
         renderGroup('groupA', 'mkGroupABody');
         renderGroup('groupB', 'mkGroupBBody');
 
-        document.getElementById('mkPlayoffContainer').innerHTML = `
-            <div class="round-column"><div class="round-header">Čtvrtfinále (2. a 3. místa)</div>${mkData.playoff_qf.map((m, i) => createMatchBox('mk', 'playoff_qf', i, m)).join('')}</div>
-            <div class="round-column"><div class="round-header">Semifinále (Vítězové skupin nasazeni)</div>${mkData.playoff_sf.map((m, i) => createMatchBox('mk', 'playoff_sf', i, m)).join('')}</div>
-            <div class="round-column"><div class="round-header">Finále MK</div>${mkData.playoff_final.map((m, i) => createMatchBox('mk', 'playoff_final', i, m)).join('')}</div>
-        `;
+        const mkPlayoff = document.getElementById('mkPlayoffContainer');
+        if (mkPlayoff) {
+            mkPlayoff.innerHTML = `
+                <div class="round-column"><div class="round-header">Čtvrtfinále (2. a 3. místa)</div>${mkData.playoff_qf.map((m, i) => createMatchBox('mk', 'playoff_qf', i, m)).join('')}</div>
+                <div class="round-column"><div class="round-header">Semifinále (Vítězové skupin nasazeni)</div>${mkData.playoff_sf.map((m, i) => createMatchBox('mk', 'playoff_sf', i, m)).join('')}</div>
+                <div class="round-column"><div class="round-header">Finále MK</div>${mkData.playoff_final.map((m, i) => createMatchBox('mk', 'playoff_final', i, m)).join('')}</div>
+            `;
+        }
     }
 
     window.updateMKGroup = function(groupKey, origIdx, field, val) {
@@ -1203,9 +1196,9 @@
         renderOverall();
     };
 
-    // 4. BEAT SABER
     function renderBeatSaber() {
         const tbody = document.getElementById('beatSaberBody');
+        if (!tbody) return;
         tbody.innerHTML = '';
         const disabledAttr = isAdminUnlocked ? '' : 'disabled';
 
@@ -1248,38 +1241,38 @@
         renderOverall();
     };
 
-    // 5. RABBIDS
     function renderRabbits() {
         const disabledAttr = isAdminUnlocked ? '' : 'disabled';
         const roundsContainer = document.getElementById('rabbitsRoundsContainer');
-        roundsContainer.innerHTML = '';
+        if (roundsContainer) {
+            roundsContainer.innerHTML = '';
+            rabbitsData.rounds.forEach((round, rIdx) => {
+                const col = document.createElement('div');
+                col.innerHTML = `<div class="round-header">${round.name}</div>`;
 
-        rabbitsData.rounds.forEach((round, rIdx) => {
-            const col = document.createElement('div');
-            col.innerHTML = `<div class="round-header">${round.name}</div>`;
+                round.groups.forEach((grp, gIdx) => {
+                    let slotsHtml = '';
+                    grp.slots.forEach((slot, sIdx) => {
+                        slotsHtml += `
+                            <div class="match-row">
+                                <select class="player-select" ${disabledAttr} onchange="updateRabbitsSlot(${rIdx}, ${gIdx}, ${sIdx}, 'p', this.value)">
+                                    ${buildPlayerOptions(slot.p)}
+                                </select>
+                                <input type="number" class="score-input" value="${slot.pts}" ${disabledAttr} onchange="updateRabbitsSlot(${rIdx}, ${gIdx}, ${sIdx}, 'pts', this.value)">
+                            </div>
+                        `;
+                    });
 
-            round.groups.forEach((grp, gIdx) => {
-                let slotsHtml = '';
-                grp.slots.forEach((slot, sIdx) => {
-                    slotsHtml += `
-                        <div class="match-row">
-                            <select class="player-select" ${disabledAttr} onchange="updateRabbitsSlot(${rIdx}, ${gIdx}, ${sIdx}, 'p', this.value)">
-                                ${buildPlayerOptions(slot.p)}
-                            </select>
-                            <input type="number" class="score-input" value="${slot.pts}" ${disabledAttr} onchange="updateRabbitsSlot(${rIdx}, ${gIdx}, ${sIdx}, 'pts', this.value)">
+                    col.innerHTML += `
+                        <div class="match-box" style="margin-bottom: 12px;">
+                            <div class="match-label"><span>${grp.title} (3 hráči)</span></div>
+                            ${slotsHtml}
                         </div>
                     `;
                 });
-
-                col.innerHTML += `
-                    <div class="match-box" style="margin-bottom: 12px;">
-                        <div class="match-label"><span>${grp.title} (3 hráči)</span></div>
-                        ${slotsHtml}
-                    </div>
-                `;
+                roundsContainer.appendChild(col);
             });
-            roundsContainer.appendChild(col);
-        });
+        }
 
         const summary = players.map(p => {
             let r1 = 0, r2 = 0;
@@ -1291,69 +1284,75 @@
         summary.sort((a, b) => b.total - a.total);
 
         const lbBody = document.getElementById('rabbitsLeaderboardBody');
-        lbBody.innerHTML = '';
-        summary.forEach((row, idx) => {
-            const isTop3 = idx < 3;
-            const isPlayoff = idx >= 3 && idx < 6;
-            
-            const tr = document.createElement('tr');
-            if (isTop3 && row.total > 0) tr.className = 'advancing-row';
-            else if (isPlayoff && row.total > 0) tr.className = 'playoff-row';
+        if (lbBody) {
+            lbBody.innerHTML = '';
+            summary.forEach((row, idx) => {
+                const isTop3 = idx < 3;
+                const isPlayoff = idx >= 3 && idx < 6;
+                
+                const tr = document.createElement('tr');
+                if (isTop3 && row.total > 0) tr.className = 'advancing-row';
+                else if (isPlayoff && row.total > 0) tr.className = 'playoff-row';
 
-            let statusText = '-';
-            if (isTop3 && row.total > 0) statusText = '<span class="badge-green">PŘÍMÝ POSTUP</span>';
-            else if (isPlayoff && row.total > 0) statusText = '<span class="badge-blue">ROZSTŘEL (2. MÍSTA)</span>';
+                let statusText = '-';
+                if (isTop3 && row.total > 0) statusText = '<span class="badge-green">PŘÍMÝ POSTUP</span>';
+                else if (isPlayoff && row.total > 0) statusText = '<span class="badge-blue">ROZSTŘEL (2. MÍSTA)</span>';
 
-            tr.innerHTML = `
-                <td><b>${idx + 1}.</b></td>
-                <td><b>${row.name}</b></td>
-                <td>${row.r1}</td>
-                <td>${row.r2}</td>
-                <td class="total-cell">${row.total}</td>
-                <td>${statusText}</td>
-            `;
-            lbBody.appendChild(tr);
-        });
+                tr.innerHTML = `
+                    <td><b>${idx + 1}.</b></td>
+                    <td><b>${row.name}</b></td>
+                    <td>${row.r1}</td>
+                    <td>${row.r2}</td>
+                    <td class="total-cell">${row.total}</td>
+                    <td>${statusText}</td>
+                `;
+                lbBody.appendChild(tr);
+            });
+        }
 
         const playoffContainer = document.getElementById('rabbitsPlayoffContainer');
-        let playoffSlotsHtml = '';
-        rabbitsData.playoff3.forEach((slot, pIdx) => {
-            playoffSlotsHtml += `
-                <div class="match-row">
-                    <span style="width: 24px; color: #38bdf8; font-weight: bold;">#${pIdx + 1}</span>
-                    <select class="player-select" ${disabledAttr} onchange="updateRabbitsPlayoff(${pIdx}, 'p', this.value)">
-                        ${buildPlayerOptions(slot.p)}
-                    </select>
-                    <input type="number" class="score-input" value="${slot.pts}" ${disabledAttr} onchange="updateRabbitsPlayoff(${pIdx}, 'pts', this.value)">
+        if (playoffContainer) {
+            let playoffSlotsHtml = '';
+            rabbitsData.playoff3.forEach((slot, pIdx) => {
+                playoffSlotsHtml += `
+                    <div class="match-row">
+                        <span style="width: 24px; color: #38bdf8; font-weight: bold;">#${pIdx + 1}</span>
+                        <select class="player-select" ${disabledAttr} onchange="updateRabbitsPlayoff(${pIdx}, 'p', this.value)">
+                            ${buildPlayerOptions(slot.p)}
+                        </select>
+                        <input type="number" class="score-input" value="${slot.pts}" ${disabledAttr} onchange="updateRabbitsPlayoff(${pIdx}, 'pts', this.value)">
+                    </div>
+                `;
+            });
+            playoffContainer.innerHTML = `
+                <div class="match-box">
+                    <div class="match-label"><span>Rozstřelová hra (3 hráči)</span><span class="badge">VÍTĚZ POSTUPUJE DO FINÁLE</span></div>
+                    ${playoffSlotsHtml}
                 </div>
             `;
-        });
-        playoffContainer.innerHTML = `
-            <div class="match-box">
-                <div class="match-label"><span>Rozstřelová hra (3 hráči)</span><span class="badge">VÍTĚZ POSTUPUJE DO FINÁLE</span></div>
-                ${playoffSlotsHtml}
-            </div>
-        `;
+        }
 
         const finalContainer = document.getElementById('rabbitsFinalContainer');
-        let finalSlotsHtml = '';
-        rabbitsData.final4.forEach((slot, fIdx) => {
-            finalSlotsHtml += `
-                <div class="match-row">
-                    <span style="width: 24px; color: var(--gold); font-weight: bold;">#${fIdx + 1}</span>
-                    <select class="player-select" ${disabledAttr} onchange="updateRabbitsFinal(${fIdx}, 'p', this.value)">
-                        ${buildPlayerOptions(slot.p)}
-                    </select>
-                    <input type="number" class="score-input" value="${slot.pts}" ${disabledAttr} onchange="updateRabbitsFinal(${fIdx}, 'pts', this.value)">
+        if (finalContainer) {
+            let finalSlotsHtml = '';
+            rabbitsData.final4.forEach((slot, fIdx) => {
+                finalSlotsHtml += `
+                    <div class="match-row">
+                        <span style="width: 24px; color: var(--gold); font-weight: bold;">#${fIdx + 1}</span>
+                        <select class="player-select" ${disabledAttr} onchange="updateRabbitsFinal(${fIdx}, 'p', this.value)">
+                            ${buildPlayerOptions(slot.p)}
+                        </select>
+                        <input type="number" class="score-input" value="${slot.pts}" ${disabledAttr} onchange="updateRabbitsFinal(${fIdx}, 'pts', this.value)">
+                    </div>
+                `;
+            });
+            finalContainer.innerHTML = `
+                <div class="match-box">
+                    <div class="match-label"><span>Finálový stůl (4 hráči najednou)</span><span class="badge">O VÍTĚZE RABBIDS</span></div>
+                    ${finalSlotsHtml}
                 </div>
             `;
-        });
-        finalContainer.innerHTML = `
-            <div class="match-box">
-                <div class="match-label"><span>Finálový stůl (4 hráči najednou)</span><span class="badge">O VÍTĚZE RABBIDS</span></div>
-                ${finalSlotsHtml}
-            </div>
-        `;
+        }
     }
 
     window.updateRabbitsSlot = function(rIdx, gIdx, sIdx, field, val) {
@@ -1389,9 +1388,9 @@
         renderOverall();
     };
 
-    // 6. ŠIPKY
     function renderDarts() {
         const tbody = document.getElementById('dartsBody');
+        if (!tbody) return;
         tbody.innerHTML = '';
         const disabledAttr = isAdminUnlocked ? '' : 'disabled';
 
@@ -1420,9 +1419,9 @@
         renderOverall();
     };
 
-    // 7. KVÍZ
     function renderQuiz() {
         const tbody = document.getElementById('quizBody');
+        if (!tbody) return;
         tbody.innerHTML = '';
         const disabledAttr = isAdminUnlocked ? '' : 'disabled';
 
@@ -1451,7 +1450,6 @@
         renderOverall();
     };
 
-    // ADMIN PIN, RESET A DISCORD
     function renderAll() {
         renderOverall();
         renderFifa();
@@ -1486,13 +1484,13 @@
     window.resetAllData = function() {
         if (!isAdminUnlocked) return;
         if (confirm("Opravdu chcete vymazat všechna data ze všech turnajů?")) {
-            localStorage.removeItem('fox_v8_players');
-            localStorage.removeItem('fox_v8_fifa');
-            localStorage.removeItem('fox_v8_mk');
-            localStorage.removeItem('fox_v8_bs');
-            localStorage.removeItem('fox_v8_rabbits');
-            localStorage.removeItem('fox_v8_darts');
-            localStorage.removeItem('fox_v8_quiz');
+            localStorage.removeItem('fox_v10_players');
+            localStorage.removeItem('fox_v10_fifa');
+            localStorage.removeItem('fox_v10_mk');
+            localStorage.removeItem('fox_v10_bs');
+            localStorage.removeItem('fox_v10_rabbits');
+            localStorage.removeItem('fox_v10_darts');
+            localStorage.removeItem('fox_v10_quiz');
             players = JSON.parse(JSON.stringify(defaultPlayers));
             fifaData = JSON.parse(JSON.stringify(defaultFifa));
             mkData = JSON.parse(JSON.stringify(defaultMK));
@@ -1536,7 +1534,9 @@
         });
     };
 
-    renderAll();
+    document.addEventListener("DOMContentLoaded", () => {
+        renderAll();
+    });
 </script>
 
 </body>
