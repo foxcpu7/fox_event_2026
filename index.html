@@ -387,7 +387,7 @@
         }
 
         input.score-input {
-            width: 48px;
+            width: 54px;
             background-color: #1e293b;
             color: var(--gold);
             border: 1px solid var(--border-color);
@@ -401,13 +401,6 @@
         input.score-input.wide {
             width: 95px;
             color: #38bdf8;
-        }
-
-        input.score-input.auto-calculated {
-            background-color: #162032;
-            color: #38bdf8;
-            border-color: transparent;
-            font-weight: bold;
         }
 
         input.score-input:disabled {
@@ -492,7 +485,7 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- 1. ZÁLOŽKA: CELKOVÉ POŘADÍ                                -->
+    <!-- 1. ZÁLOŽKA: CELKOVÉ POŘADÍ (RUČNÍ ZADÁVÁNÍ BODŮ)           -->
     <!-- ========================================================= -->
     <div id="tab-overall" class="tab-content active">
         <div class="players-grid" id="playersGrid"></div>
@@ -500,7 +493,7 @@
         <div class="section-box">
             <div class="section-title">
                 <h2>📊 Celkový bodový přehled (6 disciplín)</h2>
-                <span class="badge">Body se automaticky propočítávají z turnajů</span>
+                <span class="badge">Body zadávejte ručně po odemčení PINem</span>
             </div>
             <div class="table-wrapper">
                 <table>
@@ -664,7 +657,7 @@
 
             <div class="section-box">
                 <div class="section-title">
-                    <h2>🥊 Skupina B (5 hráčů)</h2>
+                    <h2>🥊 Skupina B (5 hráči)</h2>
                     <span class="badge-green">Postupují Top 3</span>
                 </div>
                 <table>
@@ -840,30 +833,30 @@
     ];
 
     const defaultFifa = {
-        tb_prelim: [{ id: 'tb_p1', title: 'Předkolo TB (2 hráči)', badge: 'VÍTĚZ DO ČF 1 • PORAŽENÝ DO LB', p1: '', s1: 0, p2: '', s2: 0 }],
+        tb_prelim: [{ id: 'tb_p1', title: 'Předkolo TB (2 hráči)', badge: 'VÍTĚZ DO ČF 1 • PORAŽENÝ DO LB', p1: 'Fullhouse', s1: 0, p2: 'Slapy', s2: 5 }],
         tb_qf: [
-            { id: 'tb_qf1', title: 'Čtvrtfinále 1', badge: '7x WILD CARD', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'tb_qf2', title: 'Čtvrtfinále 2', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'tb_qf3', title: 'Čtvrtfinále 3', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'tb_qf4', title: 'Čtvrtfinále 4', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+            { id: 'tb_qf1', title: 'Čtvrtfinále 1', badge: '7x WILD CARD', p1: 'DaNY', s1: 3, p2: 'Slapy', s2: 1 },
+            { id: 'tb_qf2', title: 'Čtvrtfinále 2', badge: '', p1: 'Spider', s1: 5, p2: 'Rami', s2: 0 },
+            { id: 'tb_qf3', title: 'Čtvrtfinále 3', badge: '', p1: 'Hayha', s1: 2, p2: 'Peta', s2: 0 },
+            { id: 'tb_qf4', title: 'Čtvrtfinále 4', badge: '', p1: 'Machy', s1: 0, p2: 'VJgodlike', s2: 2 }
         ],
         tb_sf: [
-            { id: 'tb_sf1', title: 'Semifinále 1', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'tb_sf2', title: 'Semifinále 2', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+            { id: 'tb_sf1', title: 'Semifinále 1', badge: '', p1: 'DaNY', s1: 0, p2: 'Spider', s2: 1 },
+            { id: 'tb_sf2', title: 'Semifinále 2', badge: '', p1: 'Hayha', s1: 1, p2: 'VJgodlike', s2: 2 }
         ],
-        tb_final: [{ id: 'tb_f1', title: 'Finále Top Bracketu', badge: 'DO GRAND FINÁLE', p1: '', s1: 0, p2: '', s2: 0 }],
-        lb_prelim: [{ id: 'lb_p1', title: 'Předkolo LB', badge: '2. ŠANCE', p1: '', s1: 0, p2: '', s2: 0 }],
+        tb_final: [{ id: 'tb_f1', title: 'Finále Top Bracketu', badge: 'DO GRAND FINÁLE', p1: 'Spider', s1: 3, p2: 'VJgodlike', s2: 4 }],
+        lb_prelim: [{ id: 'lb_p1', title: 'Předkolo LB', badge: '2. ŠANCE', p1: 'Fullhouse', s1: 0, p2: 'Rami', s2: 1 }],
         lb_r1: [
-            { id: 'lb_r1_1', title: '1. kolo oprav A', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'lb_r1_2', title: '1. kolo oprav B', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+            { id: 'lb_r1_1', title: '1. kolo oprav A', badge: '', p1: 'Slapy', s1: 1, p2: 'Rami', s2: 0 },
+            { id: 'lb_r1_2', title: '1. kolo oprav B', badge: '', p1: 'Machy', s1: 3, p2: 'Peta', s2: 0 }
         ],
         lb_r2: [
-            { id: 'lb_r2_1', title: '2. kolo oprav A', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'lb_r2_2', title: '2. kolo oprav B', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+            { id: 'lb_r2_1', title: '2. kolo oprav A', badge: '', p1: 'DaNY', s1: 2, p2: 'Slapy', s2: 0 },
+            { id: 'lb_r2_2', title: '2. kolo oprav B', badge: '', p1: 'Machy', s1: 1, p2: 'Hayha', s2: 4 }
         ],
-        lb_sf: [{ id: 'lb_sf1', title: 'Semifinále Low Bracketu', badge: '', p1: '', s1: 0, p2: '', s2: 0 }],
-        lb_final: [{ id: 'lb_f1', title: 'Finále Low Bracketu', badge: 'DO GRAND FINÁLE', p1: '', s1: 0, p2: '', s2: 0 }],
-        grand_final: [{ id: 'gf_1', title: 'GRAND FINÁLE FIFA', badge: 'ŠAMPION FIFA', p1: '', s1: 0, p2: '', s2: 0 }]
+        lb_sf: [{ id: 'lb_sf1', title: 'Semifinále Low Bracketu', badge: '', p1: 'DaNY', s1: 0, p2: 'Hayha', s2: 3 }],
+        lb_final: [{ id: 'lb_f1', title: 'Finále Low Bracketu', badge: 'DO GRAND FINÁLE', p1: 'Spider', s1: 4, p2: 'Hayha', s2: 1 }],
+        grand_final: [{ id: 'gf_1', title: 'GRAND FINÁLE FIFA', badge: 'ŠAMPION FIFA', p1: 'VJgodlike', s1: 6, p2: 'Spider', s2: 5 }]
     };
 
     const defaultMK = {
@@ -913,91 +906,25 @@
         defaultQuiz[p.id] = 0;
     });
 
-    // NAČTENÍ Z LOCALSTORAGE (v12)
-    let players = JSON.parse(localStorage.getItem('fox_v12_players')) || JSON.parse(JSON.stringify(defaultPlayers));
-    let fifaData = JSON.parse(localStorage.getItem('fox_v12_fifa')) || JSON.parse(JSON.stringify(defaultFifa));
-    let mkData = JSON.parse(localStorage.getItem('fox_v12_mk')) || JSON.parse(JSON.stringify(defaultMK));
-    let bsData = JSON.parse(localStorage.getItem('fox_v12_bs')) || JSON.parse(JSON.stringify(defaultBeatSaber));
-    let rabbitsData = JSON.parse(localStorage.getItem('fox_v12_rabbits')) || JSON.parse(JSON.stringify(defaultRabbits));
-    let dartsData = JSON.parse(localStorage.getItem('fox_v12_darts')) || JSON.parse(JSON.stringify(defaultDarts));
-    let quizData = JSON.parse(localStorage.getItem('fox_v12_quiz')) || JSON.parse(JSON.stringify(defaultQuiz));
+    // NAČTENÍ Z LOCALSTORAGE (manual_fifa_v1)
+    let players = JSON.parse(localStorage.getItem('fox_manual_fifa_v1_players')) || JSON.parse(JSON.stringify(defaultPlayers));
+    let fifaData = JSON.parse(localStorage.getItem('fox_manual_fifa_v1_fifa')) || JSON.parse(JSON.stringify(defaultFifa));
+    let mkData = JSON.parse(localStorage.getItem('fox_manual_fifa_v1_mk')) || JSON.parse(JSON.stringify(defaultMK));
+    let bsData = JSON.parse(localStorage.getItem('fox_manual_fifa_v1_bs')) || JSON.parse(JSON.stringify(defaultBeatSaber));
+    let rabbitsData = JSON.parse(localStorage.getItem('fox_manual_fifa_v1_rabbits')) || JSON.parse(JSON.stringify(defaultRabbits));
+    let dartsData = JSON.parse(localStorage.getItem('fox_manual_fifa_v1_darts')) || JSON.parse(JSON.stringify(defaultDarts));
+    let quizData = JSON.parse(localStorage.getItem('fox_manual_fifa_v1_quiz')) || JSON.parse(JSON.stringify(defaultQuiz));
 
     const games = ['sipky', 'mk', 'fifa', 'rabbits', 'beatsaber', 'kviz'];
 
     function saveAll() {
-        localStorage.setItem('fox_v12_players', JSON.stringify(players));
-        localStorage.setItem('fox_v12_fifa', JSON.stringify(fifaData));
-        localStorage.setItem('fox_v12_mk', JSON.stringify(mkData));
-        localStorage.setItem('fox_v12_bs', JSON.stringify(bsData));
-        localStorage.setItem('fox_v12_rabbits', JSON.stringify(rabbitsData));
-        localStorage.setItem('fox_v12_darts', JSON.stringify(dartsData));
-        localStorage.setItem('fox_v12_quiz', JSON.stringify(quizData));
-    }
-
-    function calculatePointsFromStandings(standingsList) {
-        const pointsMap = {};
-        players.forEach(p => { pointsMap[p.name] = 0; });
-        
-        // Pokud nikdo není v žebříčku umístěný, všichni mají 0 bodů
-        if (!standingsList || standingsList.length === 0) return pointsMap;
-
-        const ptsDistribution = [10, 8, 6, 5, 4, 3, 2, 1, 0];
-        standingsList.forEach((name, index) => {
-            if (name && pointsMap.hasOwnProperty(name)) {
-                pointsMap[name] = ptsDistribution[index] !== undefined ? ptsDistribution[index] : 0;
-            }
-        });
-        return pointsMap;
-    }
-
-    function getGameStandings(gameKey) {
-        const names = players.map(p => p.name);
-
-        if (gameKey === 'darts') {
-            const list = players.map(p => ({ name: p.name, score: dartsData[p.id] || 0 }));
-            if (list.every(x => x.score === 0)) return []; // Pokud nikdo nemá skóre, vrátí prázdno
-            list.sort((a, b) => b.score - a.score);
-            return list.map(x => x.name);
-        }
-        if (gameKey === 'kviz') {
-            const list = players.map(p => ({ name: p.name, score: quizData[p.id] || 0 }));
-            if (list.every(x => x.score === 0)) return [];
-            list.sort((a, b) => b.score - a.score);
-            return list.map(x => x.name);
-        }
-        if (gameKey === 'beatsaber') {
-            const list = players.map(p => {
-                const t = bsData[p.id] || { try1: 0, try2: 0 };
-                return { name: p.name, best: Math.max(t.try1 || 0, t.try2 || 0) };
-            });
-            if (list.every(x => x.best === 0)) return [];
-            list.sort((a, b) => b.best - a.best);
-            return list.map(x => x.name);
-        }
-        if (gameKey === 'fifa') {
-            const gf = fifaData.grand_final[0];
-            if (!gf.p1 && !gf.p2) return [];
-            let winner = gf.s1 > gf.s2 ? gf.p1 : (gf.s2 > gf.s1 ? gf.p2 : '');
-            let loser = gf.s1 > gf.s2 ? gf.p2 : (gf.s2 > gf.s1 ? gf.p1 : '');
-            let ranked = [winner, loser].filter(Boolean);
-            return ranked;
-        }
-        if (gameKey === 'mk') {
-            const f = mkData.playoff_final[0];
-            if (!f.p1 && !f.p2) return [];
-            let winner = f.s1 > f.s2 ? f.p1 : (f.s2 > f.s1 ? f.p2 : '');
-            let loser = f.s1 > f.s2 ? f.p2 : (f.s2 > f.s1 ? f.p1 : '');
-            let ranked = [winner, loser].filter(Boolean);
-            return ranked;
-        }
-        if (gameKey === 'rabbits') {
-            const f = rabbitsData.final4;
-            if (f.every(x => !x.p || x.pts === 0)) return [];
-            let sortedFinal = [...f].sort((a, b) => (b.pts || 0) - (a.pts || 0));
-            let ranked = sortedFinal.map(x => x.p).filter(Boolean);
-            return ranked;
-        }
-        return [];
+        localStorage.setItem('fox_manual_fifa_v1_players', JSON.stringify(players));
+        localStorage.setItem('fox_manual_fifa_v1_fifa', JSON.stringify(fifaData));
+        localStorage.setItem('fox_manual_fifa_v1_mk', JSON.stringify(mkData));
+        localStorage.setItem('fox_manual_fifa_v1_bs', JSON.stringify(bsData));
+        localStorage.setItem('fox_manual_fifa_v1_rabbits', JSON.stringify(rabbitsData));
+        localStorage.setItem('fox_manual_fifa_v1_darts', JSON.stringify(dartsData));
+        localStorage.setItem('fox_manual_fifa_v1_quiz', JSON.stringify(quizData));
     }
 
     window.switchTab = function(tabId, btnElement) {
@@ -1016,27 +943,20 @@
         return opts;
     }
 
+    window.updateManualScore = function(playerId, gameKey, val) {
+        if (!isAdminUnlocked) return;
+        const player = players.find(p => p.id === playerId);
+        if (!player) return;
+        if (!player.scores) player.scores = { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 };
+        player.scores[gameKey] = parseFloat(val) || 0;
+        saveAll();
+        renderOverall();
+    };
+
     function renderOverall() {
-        const dartsPoints = calculatePointsFromStandings(getGameStandings('darts'));
-        const quizPoints = calculatePointsFromStandings(getGameStandings('kviz'));
-        const bsPoints = calculatePointsFromStandings(getGameStandings('beatsaber'));
-        const fifaPoints = calculatePointsFromStandings(getGameStandings('fifa'));
-        const mkPoints = calculatePointsFromStandings(getGameStandings('mk'));
-        const rabbitsPoints = calculatePointsFromStandings(getGameStandings('rabbits'));
-
-        players.forEach(p => {
-            if (!p.scores) p.scores = { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 };
-            p.scores.sipky = dartsPoints[p.name] || 0;
-            p.scores.kviz = quizPoints[p.name] || 0;
-            p.scores.beatsaber = bsPoints[p.name] || 0;
-            p.scores.fifa = fifaPoints[p.name] || 0;
-            p.scores.mk = mkPoints[p.name] || 0;
-            p.scores.rabbits = rabbitsPoints[p.name] || 0;
-        });
-
         const sortedPlayers = [...players].sort((a, b) => {
-            const totalA = games.reduce((s, g) => s + (a.scores[g] || 0), 0);
-            const totalB = games.reduce((s, g) => s + (b.scores[g] || 0), 0);
+            const totalA = games.reduce((s, g) => s + (a.scores?.[g] || 0), 0);
+            const totalB = games.reduce((s, g) => s + (b.scores?.[g] || 0), 0);
             return totalB - totalA;
         });
 
@@ -1044,7 +964,7 @@
         if (grid) {
             grid.innerHTML = '';
             sortedPlayers.forEach((player, index) => {
-                const total = games.reduce((s, g) => s + (player.scores[g] || 0), 0);
+                const total = games.reduce((s, g) => s + (player.scores?.[g] || 0), 0);
                 const card = document.createElement('div');
                 card.className = `player-card rank-${index + 1}`;
                 const avatarHtml = player.avatar 
@@ -1062,19 +982,21 @@
         }
 
         const tbody = document.getElementById('scoresTableBody');
+        const disabledAttr = isAdminUnlocked ? '' : 'disabled';
         if (tbody) {
             tbody.innerHTML = '';
             players.forEach(player => {
+                if (!player.scores) player.scores = { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 };
                 const total = games.reduce((s, g) => s + (player.scores[g] || 0), 0);
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td><b>${player.name}</b></td>
-                    <td><input type="number" class="score-input auto-calculated" value="${player.scores.sipky}" disabled></td>
-                    <td><input type="number" class="score-input auto-calculated" value="${player.scores.mk}" disabled></td>
-                    <td><input type="number" class="score-input auto-calculated" value="${player.scores.fifa}" disabled></td>
-                    <td><input type="number" class="score-input auto-calculated" value="${player.scores.rabbits}" disabled></td>
-                    <td><input type="number" class="score-input auto-calculated" value="${player.scores.beatsaber}" disabled></td>
-                    <td><input type="number" class="score-input auto-calculated" value="${player.scores.kviz}" disabled></td>
+                    <td><input type="number" class="score-input" value="${player.scores.sipky}" ${disabledAttr} onchange="updateManualScore('${player.id}', 'sipky', this.value)"></td>
+                    <td><input type="number" class="score-input" value="${player.scores.mk}" ${disabledAttr} onchange="updateManualScore('${player.id}', 'mk', this.value)"></td>
+                    <td><input type="number" class="score-input" value="${player.scores.fifa}" ${disabledAttr} onchange="updateManualScore('${player.id}', 'fifa', this.value)"></td>
+                    <td><input type="number" class="score-input" value="${player.scores.rabbits}" ${disabledAttr} onchange="updateManualScore('${player.id}', 'rabbits', this.value)"></td>
+                    <td><input type="number" class="score-input" value="${player.scores.beatsaber}" ${disabledAttr} onchange="updateManualScore('${player.id}', 'beatsaber', this.value)"></td>
+                    <td><input type="number" class="score-input" value="${player.scores.kviz}" ${disabledAttr} onchange="updateManualScore('${player.id}', 'kviz', this.value)"></td>
                     <td class="total-cell">${total}</td>
                 `;
                 tbody.appendChild(tr);
@@ -1116,7 +1038,6 @@
             targetObj[sectionKey][idx][field] = val;
         }
         saveAll();
-        renderOverall();
     };
 
     function renderFifa() {
@@ -1200,7 +1121,6 @@
         }
         saveAll();
         renderMK();
-        renderOverall();
     };
 
     function renderBeatSaber() {
@@ -1245,7 +1165,6 @@
         bsData[playerId][tryKey] = num;
         saveAll();
         renderBeatSaber();
-        renderOverall();
     };
 
     function renderRabbits() {
@@ -1371,7 +1290,6 @@
         }
         saveAll();
         renderRabbits();
-        renderOverall();
     };
 
     window.updateRabbitsPlayoff = function(pIdx, field, val) {
@@ -1392,7 +1310,6 @@
             rabbitsData.final4[fIdx].p = val;
         }
         saveAll();
-        renderOverall();
     };
 
     function renderDarts() {
@@ -1423,7 +1340,6 @@
         dartsData[playerId] = parseInt(val) || 0;
         saveAll();
         renderDarts();
-        renderOverall();
     };
 
     function renderQuiz() {
@@ -1454,7 +1370,6 @@
         quizData[playerId] = parseInt(val) || 0;
         saveAll();
         renderQuiz();
-        renderOverall();
     };
 
     function renderAll() {
@@ -1491,16 +1406,13 @@
     window.resetAllData = function() {
         if (!isAdminUnlocked) return;
         if (confirm("Opravdu chcete vymazat všechna data ze všech turnajů?")) {
-            // Smaže všechny minulé i současné verze uložených dat v localStorage
-            for (let i = 1; i <= 15; i++) {
-                localStorage.removeItem(`fox_v${i}_players`);
-                localStorage.removeItem(`fox_v${i}_fifa`);
-                localStorage.removeItem(`fox_v${i}_mk`);
-                localStorage.removeItem(`fox_v${i}_bs`);
-                localStorage.removeItem(`fox_v${i}_rabbits`);
-                localStorage.removeItem(`fox_v${i}_darts`);
-                localStorage.removeItem(`fox_v${i}_quiz`);
-            }
+            localStorage.removeItem('fox_manual_fifa_v1_players');
+            localStorage.removeItem('fox_manual_fifa_v1_fifa');
+            localStorage.removeItem('fox_manual_fifa_v1_mk');
+            localStorage.removeItem('fox_manual_fifa_v1_bs');
+            localStorage.removeItem('fox_manual_fifa_v1_rabbits');
+            localStorage.removeItem('fox_manual_fifa_v1_darts');
+            localStorage.removeItem('fox_manual_fifa_v1_quiz');
             players = JSON.parse(JSON.stringify(defaultPlayers));
             fifaData = JSON.parse(JSON.stringify(defaultFifa));
             mkData = JSON.parse(JSON.stringify(defaultMK));
@@ -1515,14 +1427,14 @@
 
     window.sendToDiscord = function() {
         const sortedPlayers = [...players].sort((a, b) => {
-            const totalA = games.reduce((s, g) => s + (a.scores[g] || 0), 0);
-            const totalB = games.reduce((s, g) => s + (b.scores[g] || 0), 0);
+            const totalA = games.reduce((s, g) => s + (a.scores?.[g] || 0), 0);
+            const totalB = games.reduce((s, g) => s + (b.scores?.[g] || 0), 0);
             return totalB - totalA;
         });
 
         let message = "🏆 **Aktuální celkové pořadí FoX turnaje:**\n```";
         sortedPlayers.forEach((p, i) => {
-            const total = games.reduce((s, g) => s + (p.scores[g] || 0), 0);
+            const total = games.reduce((s, g) => s + (p.scores?.[g] || 0), 0);
             message += `\n${i + 1}. ${p.name.padEnd(10, ' ')} - ${total} bodů`;
         });
         message += "\n```";
