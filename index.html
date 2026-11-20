@@ -408,6 +408,39 @@
             border-color: transparent;
         }
 
+        /* --- ZÁPASY KAŽDÝ S KAŽDÝM --- */
+        .round-robin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .rr-match-card {
+            background-color: var(--match-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .rr-player-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .rr-player-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         /* --- TABULKY --- */
         .table-wrapper { overflow-x: auto; }
 
@@ -559,7 +592,7 @@
                     </div>
                     <div class="schedule-item tournament">
                         <span class="schedule-time">20:00</span>
-                        <div class="schedule-desc">🥊 Mortal Kombat<span class="schedule-sub">Skupiny A/B + Play-off</span></div>
+                        <div class="schedule-desc">🥊 Mortal Kombat<span class="schedule-sub">Skupiny A/B + Opravy + Play-off</span></div>
                     </div>
                     <div class="schedule-item party">
                         <span class="schedule-time">22:00</span>
@@ -653,11 +686,13 @@
                     </thead>
                     <tbody id="mkGroupABody"></tbody>
                 </table>
+                <div class="round-header" style="margin-top: 16px;">Zápasy každý s každým (6 zápasů)</div>
+                <div class="round-robin-grid" id="mkMatchesABody"></div>
             </div>
 
             <div class="section-box">
                 <div class="section-title">
-                    <h2>🥊 Skupina B (5 hráči)</h2>
+                    <h2>🥊 Skupina B (5 hráčů)</h2>
                     <span class="badge-green">Postupují Top 3</span>
                 </div>
                 <table>
@@ -671,12 +706,37 @@
                     </thead>
                     <tbody id="mkGroupBBody"></tbody>
                 </table>
+                <div class="round-header" style="margin-top: 16px;">Zápasy každý s každým (10 zápasů)</div>
+                <div class="round-robin-grid" id="mkMatchesBBody"></div>
+            </div>
+        </div>
+
+        <div class="section-box">
+            <div class="section-title low-title">
+                <h2>🔄 Tabulka oprav / baráže (3 hráči ze skupin)</h2>
+                <span class="badge-green">Top 2 postupují do Play-off</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 12px;">
+                Zadejte 3 hráče, kteří vypadli ze skupin A/B – 2 nejlepší postoupí do Play-off.
+            </p>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Hráč</th>
+                            <th>Výhry / Body</th>
+                            <th>Stav</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mkRepechageBody"></tbody>
+                </table>
             </div>
         </div>
 
         <div class="section-box">
             <div class="section-title top-title">
-                <h2>🏆 Mortal Kombat Play-off (Top 6 postupujících)</h2>
+                <h2>🏆 Mortal Kombat Play-off (8 hráčů: 6 ze skupin + 2 z oprav)</h2>
             </div>
             <div class="bracket-rounds" id="mkPlayoffContainer"></div>
         </div>
@@ -734,7 +794,6 @@
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 20px;">
-                <!-- Rozstřel o 4. místo -->
                 <div class="section-box" style="margin-bottom: 0;">
                     <div class="section-title low-title">
                         <h2>🎯 Rozstřel o 4. místo ve finále</h2>
@@ -746,7 +805,6 @@
                     <div id="rabbitsPlayoffContainer"></div>
                 </div>
 
-                <!-- Velké Finále -->
                 <div class="section-box" style="margin-bottom: 0;">
                     <div class="section-title grand-title">
                         <h2>👑 Velké Finále Rabbids (4 hráči)</h2>
@@ -821,15 +879,15 @@
     let isAdminUnlocked = false;
 
     const defaultPlayers = [
-        { id: 'dany', name: 'DaNY', avatar: 'dany.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'fullhouse', name: 'Fullhouse', avatar: 'Fullhouse.jpg', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'spider', name: 'Spider', avatar: 'Spider.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'vjgodlike', name: 'VJgodlike', avatar: 'VJgodlike.jpg', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'machy', name: 'Machy', avatar: 'Machy.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'rami', name: 'Rami', avatar: 'Rami.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'hayha', name: 'Hayha', avatar: 'Hayha.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'slapy', name: 'Slapy', avatar: 'slapy.jpg', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } },
-        { id: 'peta', name: 'Peta', avatar: 'Peta.png', scores: { sipky: 0, mk: 0, fifa: 0, rabbits: 0, beatsaber: 0, kviz: 0 } }
+        { id: 'dany', name: 'DaNY', avatar: 'dany.png', scores: { sipky: 4, mk: 0, fifa: 6, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'fullhouse', name: 'Fullhouse', avatar: 'Fullhouse.jpg', scores: { sipky: 3, mk: 0, fifa: 2, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'spider', name: 'Spider', avatar: 'Spider.png', scores: { sipky: 1, mk: 0, fifa: 10, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'vjgodlike', name: 'VJgodlike', avatar: 'VJgodlike.jpg', scores: { sipky: 8, mk: 0, fifa: 12, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'machy', name: 'Machy', avatar: 'Machy.png', scores: { sipky: 10, mk: 0, fifa: 4, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'rami', name: 'Rami', avatar: 'Rami.png', scores: { sipky: 5, mk: 0, fifa: 2, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'hayha', name: 'Hayha', avatar: 'Hayha.png', scores: { sipky: 12, mk: 0, fifa: 8, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'slapy', name: 'Slapy', avatar: 'slapy.jpg', scores: { sipky: 2, mk: 0, fifa: 4, rabbits: 0, beatsaber: 0, kviz: 0 } },
+        { id: 'peta', name: 'Peta', avatar: 'Peta.png', scores: { sipky: 6, mk: 0, fifa: 2, rabbits: 0, beatsaber: 0, kviz: 0 } }
     ];
 
     const defaultFifa = {
@@ -860,18 +918,67 @@
     };
 
     const defaultMK = {
-        groupA: [{ player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }],
-        groupB: [{ player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }],
+        groupA: [
+            { player: 'Spider', points: 0 },
+            { player: 'Fullhouse', points: 0 },
+            { player: 'VJgodlike', points: 0 },
+            { player: 'Hayha', points: 0 }
+        ],
+        groupB: [
+            { player: 'Machy', points: 0 },
+            { player: 'Rami', points: 0 },
+            { player: 'Peta', points: 0 },
+            { player: 'Slapy', points: 0 },
+            { player: 'DaNY', points: 0 }
+        ],
+        matchesA: [],
+        matchesB: [],
+        repechage: [{ player: '', points: 0 }, { player: '', points: 0 }, { player: '', points: 0 }],
         playoff_qf: [
-            { id: 'mk_qf1', title: 'Čtvrtfinále 1 (A2 vs B3)', badge: '1. ze skupin mají volno', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'mk_qf2', title: 'Čtvrtfinále 2 (B2 vs A3)', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+            { id: 'mk_qf1', title: 'Čtvrtfinále 1', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'mk_qf2', title: 'Čtvrtfinále 2', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'mk_qf3', title: 'Čtvrtfinále 3', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'mk_qf4', title: 'Čtvrtfinále 4', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
         ],
         playoff_sf: [
-            { id: 'mk_sf1', title: 'Semifinále 1 (A1 vs vítěz ČF)', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
-            { id: 'mk_sf2', title: 'Semifinále 2 (B1 vs vítěz ČF)', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
+            { id: 'mk_sf1', title: 'Semifinále 1', badge: '', p1: '', s1: 0, p2: '', s2: 0 },
+            { id: 'mk_sf2', title: 'Semifinále 2', badge: '', p1: '', s1: 0, p2: '', s2: 0 }
         ],
         playoff_final: [{ id: 'mk_f1', title: 'FINÁLE MORTAL KOMBAT', badge: 'VÍTĚZ MK', p1: '', s1: 0, p2: '', s2: 0 }]
     };
+
+    function generateRoundRobinPairs(groupList) {
+        const names = groupList.map(item => item.player).filter(Boolean);
+        const pairs = [];
+        for (let i = 0; i < names.length; i++) {
+            for (let j = i + 1; j < names.length; j++) {
+                pairs.push({ p1: names[i], s1: 0, p2: names[j], s2: 0 });
+            }
+        }
+        return pairs;
+    }
+
+    function ensureRoundRobinMatches(groupList, existingMatches) {
+        const expectedPairs = generateRoundRobinPairs(groupList);
+        if (!Array.isArray(existingMatches) || existingMatches.length !== expectedPairs.length) {
+            return expectedPairs;
+        }
+        const matchMap = new Map();
+        existingMatches.forEach(m => {
+            matchMap.set(`${m.p1}|||${m.p2}`, m);
+            matchMap.set(`${m.p2}|||${m.p1}`, m);
+        });
+        return expectedPairs.map(pair => {
+            const found = matchMap.get(`${pair.p1}|||${pair.p2}`);
+            if (found) {
+                return { p1: pair.p1, s1: found.s1 || 0, p2: pair.p2, s2: found.s2 || 0 };
+            }
+            return pair;
+        });
+    }
+
+    defaultMK.matchesA = generateRoundRobinPairs(defaultMK.groupA);
+    defaultMK.matchesB = generateRoundRobinPairs(defaultMK.groupB);
 
     const defaultBeatSaber = {};
     defaultPlayers.forEach(p => { defaultBeatSaber[p.id] = { try1: 0, try2: 0 }; });
@@ -899,32 +1006,48 @@
         final4: [{ p: '', pts: 0 }, { p: '', pts: 0 }, { p: '', pts: 0 }, { p: '', pts: 0 }]
     };
 
-    const defaultDarts = {};
+    const defaultDarts = {
+        dany: 195,
+        fullhouse: 191,
+        spider: 159,
+        vjgodlike: 285,
+        machy: 293,
+        rami: 224,
+        hayha: 314,
+        slapy: 168,
+        peta: 273
+    };
+
     const defaultQuiz = {};
     defaultPlayers.forEach(p => {
-        defaultDarts[p.id] = 0;
         defaultQuiz[p.id] = 0;
     });
 
-    // NAČTENÍ Z LOCALSTORAGE (manual_fifa_v1)
-    let players = JSON.parse(localStorage.getItem('fox_manual_fifa_v1_players')) || JSON.parse(JSON.stringify(defaultPlayers));
-    let fifaData = JSON.parse(localStorage.getItem('fox_manual_fifa_v1_fifa')) || JSON.parse(JSON.stringify(defaultFifa));
-    let mkData = JSON.parse(localStorage.getItem('fox_manual_fifa_v1_mk')) || JSON.parse(JSON.stringify(defaultMK));
-    let bsData = JSON.parse(localStorage.getItem('fox_manual_fifa_v1_bs')) || JSON.parse(JSON.stringify(defaultBeatSaber));
-    let rabbitsData = JSON.parse(localStorage.getItem('fox_manual_fifa_v1_rabbits')) || JSON.parse(JSON.stringify(defaultRabbits));
-    let dartsData = JSON.parse(localStorage.getItem('fox_manual_fifa_v1_darts')) || JSON.parse(JSON.stringify(defaultDarts));
-    let quizData = JSON.parse(localStorage.getItem('fox_manual_fifa_v1_quiz')) || JSON.parse(JSON.stringify(defaultQuiz));
+    // NAČTENÍ Z LOCALSTORAGE (fox_lan_nov2026_v1)
+    let players = JSON.parse(localStorage.getItem('fox_lan_nov2026_v1_players')) || JSON.parse(JSON.stringify(defaultPlayers));
+    let fifaData = JSON.parse(localStorage.getItem('fox_lan_nov2026_v1_fifa')) || JSON.parse(JSON.stringify(defaultFifa));
+    let mkData = JSON.parse(localStorage.getItem('fox_lan_nov2026_v1_mk')) || JSON.parse(JSON.stringify(defaultMK));
+    if (!Array.isArray(mkData.repechage) || mkData.repechage.length !== 3) {
+        mkData.repechage = JSON.parse(JSON.stringify(defaultMK.repechage));
+    }
+    mkData.matchesA = ensureRoundRobinMatches(mkData.groupA, mkData.matchesA);
+    mkData.matchesB = ensureRoundRobinMatches(mkData.groupB, mkData.matchesB);
+
+    let bsData = JSON.parse(localStorage.getItem('fox_lan_nov2026_v1_bs')) || JSON.parse(JSON.stringify(defaultBeatSaber));
+    let rabbitsData = JSON.parse(localStorage.getItem('fox_lan_nov2026_v1_rabbits')) || JSON.parse(JSON.stringify(defaultRabbits));
+    let dartsData = JSON.parse(localStorage.getItem('fox_lan_nov2026_v1_darts')) || JSON.parse(JSON.stringify(defaultDarts));
+    let quizData = JSON.parse(localStorage.getItem('fox_lan_nov2026_v1_quiz')) || JSON.parse(JSON.stringify(defaultQuiz));
 
     const games = ['sipky', 'mk', 'fifa', 'rabbits', 'beatsaber', 'kviz'];
 
     function saveAll() {
-        localStorage.setItem('fox_manual_fifa_v1_players', JSON.stringify(players));
-        localStorage.setItem('fox_manual_fifa_v1_fifa', JSON.stringify(fifaData));
-        localStorage.setItem('fox_manual_fifa_v1_mk', JSON.stringify(mkData));
-        localStorage.setItem('fox_manual_fifa_v1_bs', JSON.stringify(bsData));
-        localStorage.setItem('fox_manual_fifa_v1_rabbits', JSON.stringify(rabbitsData));
-        localStorage.setItem('fox_manual_fifa_v1_darts', JSON.stringify(dartsData));
-        localStorage.setItem('fox_manual_fifa_v1_quiz', JSON.stringify(quizData));
+        localStorage.setItem('fox_lan_nov2026_v1_players', JSON.stringify(players));
+        localStorage.setItem('fox_lan_nov2026_v1_fifa', JSON.stringify(fifaData));
+        localStorage.setItem('fox_lan_nov2026_v1_mk', JSON.stringify(mkData));
+        localStorage.setItem('fox_lan_nov2026_v1_bs', JSON.stringify(bsData));
+        localStorage.setItem('fox_lan_nov2026_v1_rabbits', JSON.stringify(rabbitsData));
+        localStorage.setItem('fox_lan_nov2026_v1_darts', JSON.stringify(dartsData));
+        localStorage.setItem('fox_lan_nov2026_v1_quiz', JSON.stringify(quizData));
     }
 
     window.switchTab = function(tabId, btnElement) {
@@ -1067,10 +1190,39 @@
         }
     }
 
+    function renderRoundRobinMatches(matchesKey, containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        const disabledAttr = isAdminUnlocked ? '' : 'disabled';
+        const matches = mkData[matchesKey] || [];
+
+        container.innerHTML = matches.map((m, idx) => `
+            <div class="rr-match-card">
+                <div class="rr-player-line">
+                    <span class="rr-player-name">${m.p1 || 'Hráč 1'}</span>
+                    <input type="number" class="score-input" value="${m.s1}" ${disabledAttr}
+                        onchange="updateMKMatch('${matchesKey}', ${idx}, 's1', this.value)">
+                </div>
+                <div class="rr-player-line">
+                    <span class="rr-player-name">${m.p2 || 'Hráč 2'}</span>
+                    <input type="number" class="score-input" value="${m.s2}" ${disabledAttr}
+                        onchange="updateMKMatch('${matchesKey}', ${idx}, 's2', this.value)">
+                </div>
+            </div>
+        `).join('');
+    }
+
+    window.updateMKMatch = function(matchesKey, idx, scoreField, val) {
+        if (!isAdminUnlocked) return;
+        if (!mkData[matchesKey] || !mkData[matchesKey][idx]) return;
+        mkData[matchesKey][idx][scoreField] = parseInt(val) || 0;
+        saveAll();
+    };
+
     function renderMK() {
         const disabledAttr = isAdminUnlocked ? '' : 'disabled';
 
-        const renderGroup = (groupKey, bodyId) => {
+        const renderGroup = (groupKey, bodyId, advanceCount) => {
             const tbody = document.getElementById(bodyId);
             if (!tbody) return;
             tbody.innerHTML = '';
@@ -1079,7 +1231,7 @@
             indexed.sort((a, b) => b.points - a.points);
 
             indexed.forEach((row, rankIdx) => {
-                const isAdvancing = rankIdx < 3;
+                const isAdvancing = rankIdx < advanceCount;
                 const tr = document.createElement('tr');
                 if (isAdvancing && row.player) tr.className = 'advancing-row';
 
@@ -1093,20 +1245,23 @@
                     <td>
                         <input type="number" class="score-input" value="${row.points}" ${disabledAttr} onchange="updateMKGroup('${groupKey}', ${row.origIdx}, 'points', this.value)">
                     </td>
-                    <td>${isAdvancing ? '<span class="badge-green">POSTUP</span>' : '<span style="color:#64748b;font-size:0.8rem;">Mimo</span>'}</td>
+                    <td>${isAdvancing ? '<span class="badge-green">POSTUP</span>' : '<span style="color:#64748b;font-size:0.8rem;">Opravy / Mimo</span>'}</td>
                 `;
                 tbody.appendChild(tr);
             });
         };
 
-        renderGroup('groupA', 'mkGroupABody');
-        renderGroup('groupB', 'mkGroupBBody');
+        renderGroup('groupA', 'mkGroupABody', 3);
+        renderGroup('groupB', 'mkGroupBBody', 3);
+        renderRoundRobinMatches('matchesA', 'mkMatchesABody');
+        renderRoundRobinMatches('matchesB', 'mkMatchesBBody');
+        renderGroup('repechage', 'mkRepechageBody', 2);
 
         const mkPlayoff = document.getElementById('mkPlayoffContainer');
         if (mkPlayoff) {
             mkPlayoff.innerHTML = `
-                <div class="round-column"><div class="round-header">Čtvrtfinále (2. a 3. místa)</div>${mkData.playoff_qf.map((m, i) => createMatchBox('mk', 'playoff_qf', i, m)).join('')}</div>
-                <div class="round-column"><div class="round-header">Semifinále (Vítězové skupin nasazeni)</div>${mkData.playoff_sf.map((m, i) => createMatchBox('mk', 'playoff_sf', i, m)).join('')}</div>
+                <div class="round-column"><div class="round-header">Čtvrtfinále (8 hráčů)</div>${mkData.playoff_qf.map((m, i) => createMatchBox('mk', 'playoff_qf', i, m)).join('')}</div>
+                <div class="round-column"><div class="round-header">Semifinále</div>${mkData.playoff_sf.map((m, i) => createMatchBox('mk', 'playoff_sf', i, m)).join('')}</div>
                 <div class="round-column"><div class="round-header">Finále MK</div>${mkData.playoff_final.map((m, i) => createMatchBox('mk', 'playoff_final', i, m)).join('')}</div>
             `;
         }
@@ -1118,6 +1273,11 @@
             mkData[groupKey][origIdx].points = parseInt(val) || 0;
         } else {
             mkData[groupKey][origIdx].player = val;
+            if (groupKey === 'groupA') {
+                mkData.matchesA = ensureRoundRobinMatches(mkData.groupA, mkData.matchesA);
+            } else if (groupKey === 'groupB') {
+                mkData.matchesB = ensureRoundRobinMatches(mkData.groupB, mkData.matchesB);
+            }
         }
         saveAll();
         renderMK();
@@ -1406,13 +1566,13 @@
     window.resetAllData = function() {
         if (!isAdminUnlocked) return;
         if (confirm("Opravdu chcete vymazat všechna data ze všech turnajů?")) {
-            localStorage.removeItem('fox_manual_fifa_v1_players');
-            localStorage.removeItem('fox_manual_fifa_v1_fifa');
-            localStorage.removeItem('fox_manual_fifa_v1_mk');
-            localStorage.removeItem('fox_manual_fifa_v1_bs');
-            localStorage.removeItem('fox_manual_fifa_v1_rabbits');
-            localStorage.removeItem('fox_manual_fifa_v1_darts');
-            localStorage.removeItem('fox_manual_fifa_v1_quiz');
+            localStorage.removeItem('fox_lan_nov2026_v1_players');
+            localStorage.removeItem('fox_lan_nov2026_v1_fifa');
+            localStorage.removeItem('fox_lan_nov2026_v1_mk');
+            localStorage.removeItem('fox_lan_nov2026_v1_bs');
+            localStorage.removeItem('fox_lan_nov2026_v1_rabbits');
+            localStorage.removeItem('fox_lan_nov2026_v1_darts');
+            localStorage.removeItem('fox_lan_nov2026_v1_quiz');
             players = JSON.parse(JSON.stringify(defaultPlayers));
             fifaData = JSON.parse(JSON.stringify(defaultFifa));
             mkData = JSON.parse(JSON.stringify(defaultMK));
